@@ -516,3 +516,31 @@ Next recommended step:
 
 - add a minimal actual HTTP server or route adapter in `apps/api`
 - then hand Loveable the explicit asset-preview contract for frontend integration
+
+### 2026-03-16 - Codex
+
+What changed:
+
+- added a minimal Node HTTP server for local API integration
+- exposed health, story, artifact, and local asset routes from `apps/api`
+- added a probe script that exercises the running server over HTTP
+
+Files touched:
+
+- `apps/api/src/server.ts`
+- `apps/api/package.json`
+- `package.json`
+- `scripts/probe-api-server.mjs`
+- `docs/api-contracts.md`
+- `docs/backend-frontend-boundaries.md`
+- `docs/build-sequence.md`
+
+Open questions:
+
+- whether to keep the server framework-neutral or move to Fastify once mutation routes expand
+- whether Loveable should consume the local API directly now or keep using generated fixtures until review UI starts
+
+Next recommended step:
+
+- run the local API server and verify asset/JSON endpoints end to end
+- then hand Loveable the exact local base URL and implemented routes

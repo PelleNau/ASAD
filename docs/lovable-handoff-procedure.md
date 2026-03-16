@@ -192,6 +192,8 @@ Loveable should assume the backend will eventually provide:
 
 For now, use the fixtures as the contract-aligned mock data layer.
 
+Current local backend preview endpoints are available in `ASAD` for early integration testing once the API server is running.
+
 ## Coordination Rule
 
 If Loveable wants to introduce:

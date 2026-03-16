@@ -183,6 +183,10 @@ Purpose:
 
 - fetch normalized story metadata
 
+Local dev fixture route currently implemented as:
+
+- `GET /stories/example-story`
+
 ### `POST /stories/:storyId/generate`
 
 Purpose:
@@ -195,11 +199,20 @@ Purpose:
 
 - list generated artifacts for a story
 
+Local dev fixture route currently implemented as:
+
+- `GET /stories/example-story/artifacts`
+
 ### `GET /artifacts/:artifactId`
 
 Purpose:
 
 - fetch one generated artifact and preview metadata
+
+Local dev fixture routes currently implemented as:
+
+- `GET /artifacts/artifact-worksheet-beginner-v1`
+- `GET /artifacts/artifact-answer-sheet-beginner-v1`
 
 ### `POST /artifacts/:artifactId/review`
 
@@ -218,6 +231,10 @@ Expected behavior:
 - resolves to the asset record's `publicPath`
 - returns the stored binary with the correct `content-type`
 - should be treated as a local/dev serving path, not final production CDN design
+
+Additional local route:
+
+- `GET /health`
 
 ## Notes For Loveable
 

@@ -10,12 +10,17 @@
       "types": "./dist/apps/api/src/index.d.ts",
       "default": "./dist/apps/api/src/index.js"
     },
+    "./server": {
+      "types": "./dist/apps/api/src/server.d.ts",
+      "default": "./dist/apps/api/src/server.js"
+    },
     "./fixtures": {
       "types": "./dist/apps/api/src/fixtures.d.ts",
       "default": "./dist/apps/api/src/fixtures.js"
     }
   },
   "scripts": {
+    "start": "node dist/apps/api/src/server.js",
     "build": "tsc -p tsconfig.json",
     "check": "tsc -p tsconfig.json --noEmit"
   },

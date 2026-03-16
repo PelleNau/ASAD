@@ -128,6 +128,8 @@ Backend returns:
 Backend should support:
 
 - `GET /assets/local/:fileName`
+- `GET /health`
+- local JSON fixture routes for stories and artifacts during early integration
 
 Frontend should:
 

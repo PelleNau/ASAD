@@ -82,6 +82,21 @@ Expected output:
 
 - JSON describing the local asset route result for the sample illustration
 
+## 7. Run local API server
+
+```bash
+ASAD_ROOT="$PWD" COREPACK_HOME="$PWD/.corepack-cache" corepack pnpm api:start
+```
+
+Useful local URLs:
+
+- `http://127.0.0.1:4312/health`
+- `http://127.0.0.1:4312/stories`
+- `http://127.0.0.1:4312/stories/example-story`
+- `http://127.0.0.1:4312/stories/example-story/artifacts`
+- `http://127.0.0.1:4312/artifacts/artifact-worksheet-beginner-v1`
+- `http://127.0.0.1:4312/artifacts/artifact-answer-sheet-beginner-v1`
+
 ## Current Notes
 
 - `apps/api` depends on `@asad/worker` for fixture generation helpers.
