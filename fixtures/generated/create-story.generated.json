@@ -6,8 +6,18 @@
     "language": "sv",
     "storyText": "Detta ar en platshallare for den forsta historien.",
     "illustrationAssetId": "example-story-example-illustration",
-    "illustrationUrl": "file:///Users/pellenaucler/Documents/CodexProjekt/ASAD/artifacts/assets/example-story-example-illustration.svg",
+    "illustrationUrl": "/assets/local/example-story-example-illustration.svg",
     "illustrationAlt": "Sagolik illustration for exempelberattelsen",
+    "illustrationAsset": {
+      "assetId": "example-story-example-illustration",
+      "kind": "illustration",
+      "fileName": "example-story-example-illustration.svg",
+      "mediaType": "image/svg+xml",
+      "storagePath": "/Users/pellenaucler/Documents/CodexProjekt/ASAD/artifacts/assets/example-story-example-illustration.svg",
+      "publicPath": "/assets/local/example-story-example-illustration.svg",
+      "renderUrl": "/assets/local/example-story-example-illustration.svg",
+      "altText": "Sagolik illustration for exempelberattelsen"
+    },
     "themes": [],
     "teachingHooks": []
   },

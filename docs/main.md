@@ -460,3 +460,31 @@ Next recommended step:
 
 - add an asset metadata schema and API response shape
 - then replace `file://` preview URLs with a local-served asset path for browser-facing environments
+
+### 2026-03-16 - Codex
+
+What changed:
+
+- added a formal asset schema to the shared schema package
+- embedded optional illustration asset metadata in the story record
+- switched local illustration render URLs from `file://` URLs to browser-safe `/assets/local/...` paths
+
+Files touched:
+
+- `packages/schemas/src/asset.ts`
+- `packages/schemas/src/story.ts`
+- `packages/schemas/src/index.ts`
+- `packages/assets/src/index.ts`
+- `apps/api/src/index.ts`
+- `docs/api-contracts.md`
+- `docs/backend-frontend-boundaries.md`
+
+Open questions:
+
+- whether `storagePath` should stay visible outside backend-only contracts
+- whether `/assets/local/...` should be treated as a dev-only convention or the permanent public asset path shape
+
+Next recommended step:
+
+- add a minimal asset-serving route in the API layer for local/dev preview
+- then thread asset metadata into frontend fixtures and preview docs more explicitly

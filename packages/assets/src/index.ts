@@ -3,9 +3,11 @@ import path from "node:path";
 
 export type LocalIllustrationAsset = {
   assetId: string;
+  kind: "illustration";
   fileName: string;
   mediaType: string;
   storagePath: string;
+  publicPath: string;
   renderUrl: string;
   altText: string | null;
 };
@@ -98,14 +100,17 @@ export function createLocalAssetStore(options: { rootDir: string }): LocalAssetS
 
       const fileName = `${assetId}.${extension}`;
       const storagePath = path.join(assetRoot, fileName);
+      const publicPath = `/assets/local/${fileName}`;
       writeFileSync(storagePath, buffer);
 
       return {
         assetId,
+        kind: "illustration",
         fileName,
         mediaType,
         storagePath,
-        renderUrl: `file://${storagePath}`,
+        publicPath,
+        renderUrl: publicPath,
         altText: input.altText ?? null
       };
     }

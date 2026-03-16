@@ -4,6 +4,21 @@ Initial backend/frontend contract draft.
 
 These are v0 contracts for alignment, not final production interfaces.
 
+## Asset
+
+```ts
+type AssetRecord = {
+  assetId: string;
+  kind: "illustration";
+  fileName: string;
+  mediaType: string;
+  storagePath: string;
+  publicPath: string;
+  renderUrl: string;
+  altText?: string | null;
+};
+```
+
 ## Story
 
 ```ts
@@ -16,6 +31,7 @@ type StoryRecord = {
   illustrationAssetId: string;
   illustrationUrl?: string | null;
   illustrationAlt?: string | null;
+  illustrationAsset?: AssetRecord;
   targetAgeBand?: string | null;
   themes: string[];
   teachingHooks: string[];
@@ -158,6 +174,7 @@ Expected ingestion behavior:
 
 - backend stores the uploaded asset
 - backend resolves a renderable `illustrationUrl`
+- backend resolves a browser-safe `publicPath`
 - backend stores optional `illustrationAlt` for print/accessibility use
 
 ### `GET /stories/:storyId`

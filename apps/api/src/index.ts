@@ -26,7 +26,8 @@ const story = createStoryRecord({
   storyText: "Detta ar en platshallare for den forsta historien.",
   illustrationAssetId: exampleIllustration.assetId,
   illustrationUrl: exampleIllustration.renderUrl,
-  illustrationAlt: exampleIllustration.altText
+  illustrationAlt: exampleIllustration.altText,
+  illustrationAsset: exampleIllustration
 });
 
 const request = createMaterialGenerationRequest({

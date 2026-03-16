@@ -93,6 +93,7 @@ Backend returns:
 - story ID
 - upload status
 - illustration asset ID
+- illustration asset metadata
 - renderable illustration URL when available
 - illustration alt text when available
 - validation errors if any

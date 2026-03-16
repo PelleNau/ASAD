@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { assetRecordSchema } from "./asset.js";
 
 export const storyRecordSchema = z.object({
   storyId: z.string().min(1),
@@ -9,6 +10,7 @@ export const storyRecordSchema = z.object({
   illustrationAssetId: z.string().min(1),
   illustrationUrl: z.string().min(1).nullable().optional(),
   illustrationAlt: z.string().min(1).nullable().optional(),
+  illustrationAsset: assetRecordSchema.optional(),
   targetAgeBand: z.string().nullable().optional(),
   themes: z.array(z.string()).default([]),
   teachingHooks: z.array(z.string()).default([])
