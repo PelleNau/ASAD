@@ -2,23 +2,13 @@
 
 This document tells Loveable how to start work, what to read first, what to treat as source of truth, and how to hand work back cleanly.
 
-## Repositories
+## Repository
 
-### Backend repository
-
-Use this repository as the backend source of truth:
+Use this repository for both backend and frontend work:
 
 - `ASAD`
 
-Backend-owned contracts, schemas, fixtures, and process docs live here.
-
-### Frontend repository
-
-Loveable should write frontend implementation in:
-
-- `blank-canvas`
-
-That repository is the frontend target for mockups and early implementation.
+Backend-owned contracts, schemas, fixtures, frontend implementation, and process docs all live here.
 
 ## Phase
 
@@ -71,7 +61,7 @@ Do not invent new backend states unless proposing a change explicitly.
 
 ## What Loveable Should Build First
 
-In `blank-canvas`, Loveable should create the first UI/UX implementation for:
+In `ASAD`, Loveable should create the first UI/UX implementation for:
 
 1. Story Library
 2. Story Upload / New Story
@@ -120,7 +110,7 @@ Review the backend docs and fixtures in `ASAD`.
 
 ### Step 2
 
-Set up the frontend workspace in `blank-canvas`.
+Set up the frontend workspace in `ASAD`, using frontend-first paths such as `apps/web`.
 
 ### Step 3
 

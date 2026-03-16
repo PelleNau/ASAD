@@ -232,7 +232,7 @@ Next recommended step:
 What changed:
 
 - added a formal handoff procedure for Loveable
-- documented repo split between `ASAD` and `blank-canvas`
+- documented frontend handoff expectations in the shared `ASAD` repo
 - documented required handoff format in both directions
 
 Files touched:
@@ -247,7 +247,7 @@ Open questions:
 
 Next recommended step:
 
-- tell Loveable to start in `blank-canvas` using the fixture and contract docs from `ASAD`
+- tell Loveable to start in `ASAD` using the fixture and contract docs
 
 ### 2026-03-16 - Codex
 
@@ -569,3 +569,47 @@ Next recommended step:
 
 - expose teacher-notes detail and review paths in the local server
 - then decide whether to persist local workflow state between runs
+
+### 2026-03-16 - Codex
+
+What changed:
+
+- converted the system brief into a stricter engineering-ready v1 specification
+- added explicit entities, state models, validation rules, review flow, and acceptance criteria
+
+Files touched:
+
+- `docs/v1-engineering-spec.md`
+
+Open questions:
+
+- whether this spec should now replace the earlier architecture brief as the primary implementation reference
+- which parts of the spec should be marked MVP versus phase 2 in a separate roadmap doc
+
+Next recommended step:
+
+- use `docs/v1-engineering-spec.md` as the working source of truth for backend and frontend planning
+- then align current implemented routes, schemas, and artifacts against the acceptance criteria
+
+### 2026-03-16 - Codex
+
+What changed:
+
+- added a dedicated frontend specification for Loveable
+- aligned the frontend direction with the warm editorial brand signals from `astoryaday.com`
+- translated that visual language into a backend-aware operator UI spec
+
+Files touched:
+
+- `docs/frontend-specification.md`
+- `docs/main.md`
+
+Open questions:
+
+- whether Loveable should mirror the public brand typography exactly or use an adjacent stack for the operator app
+- whether the first frontend pass should integrate the local ASAD preview API immediately or remain fixture-first
+
+Next recommended step:
+
+- hand `docs/frontend-specification.md` to Loveable as the active UI brief
+- build the first route-level mockups in `ASAD`
