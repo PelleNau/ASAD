@@ -1,4 +1,6 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import {
   buildAnswerSheetDetailFixture,
   buildArtifactDetailFixture,
@@ -8,6 +10,8 @@ import {
   buildStoryListFixture
 } from "./fixtures.js";
 import { getLocalAssetRouteResult } from "./index.js";
+
+const publicDir = path.resolve(process.env.ASAD_ROOT ?? process.cwd(), "public");
 
 function sendJson(response: ServerResponse, statusCode: number, payload: unknown): void {
   response.writeHead(statusCode, {
@@ -33,6 +37,15 @@ async function routeRequest(request: IncomingMessage, response: ServerResponse):
 
   if (method === "GET" && pathname === "/health") {
     sendJson(response, 200, { ok: true });
+    return;
+  }
+
+  if (method === "GET" && (pathname === "/" || pathname === "/preview")) {
+    const html = await readFile(path.join(publicDir, "local-preview.html"), "utf8");
+    response.writeHead(200, {
+      "content-type": "text/html; charset=utf-8"
+    });
+    response.end(html);
     return;
   }
 
