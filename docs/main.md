@@ -544,3 +544,28 @@ Next recommended step:
 
 - run the local API server and verify asset/JSON endpoints end to end
 - then hand Loveable the exact local base URL and implemented routes
+
+### 2026-03-16 - Codex
+
+What changed:
+
+- added in-memory generation and review actions to the local API server
+- wired the backend-owned preview page to call those actions directly
+- verified state changes over HTTP for generate and approve flows
+
+Files touched:
+
+- `apps/api/src/server.ts`
+- `public/local-preview.html`
+- `docs/api-contracts.md`
+- `docs/build-sequence.md`
+
+Open questions:
+
+- whether local server state should reset on restart or persist to a dev file store
+- whether teacher notes should be added to the mutable local workflow state next
+
+Next recommended step:
+
+- expose teacher-notes detail and review paths in the local server
+- then decide whether to persist local workflow state between runs

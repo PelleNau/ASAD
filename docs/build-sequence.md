@@ -96,6 +96,7 @@ Useful local URLs:
 - `http://127.0.0.1:4312/stories/example-story/artifacts`
 - `http://127.0.0.1:4312/artifacts/artifact-worksheet-beginner-v1`
 - `http://127.0.0.1:4312/artifacts/artifact-answer-sheet-beginner-v1`
+- `http://127.0.0.1:4312/preview`
 
 ## Current Notes
 

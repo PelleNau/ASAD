@@ -193,6 +193,10 @@ Purpose:
 
 - request generation for one or more artifact types
 
+Local dev route currently implemented as:
+
+- `POST /stories/example-story/generate`
+
 ### `GET /stories/:storyId/artifacts`
 
 Purpose:
@@ -219,6 +223,11 @@ Local dev fixture routes currently implemented as:
 Purpose:
 
 - approve or reject generated artifact
+
+Local dev route currently implemented as:
+
+- `POST /artifacts/artifact-worksheet-beginner-v1/review`
+- `POST /artifacts/artifact-answer-sheet-beginner-v1/review`
 
 ### `GET /assets/local/:fileName`
 

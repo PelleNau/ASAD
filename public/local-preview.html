@@ -118,6 +118,30 @@
         gap: 12px;
         padding: 18px 20px 10px;
       }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 0 0 18px;
+      }
+      button {
+        appearance: none;
+        border: 0;
+        border-radius: 999px;
+        padding: 10px 14px;
+        background: var(--accent);
+        color: white;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      button.secondary {
+        background: #a34b29;
+      }
+      button.ghost {
+        background: #ece2d5;
+        color: var(--ink);
+      }
       .preview-title {
         margin: 0;
         font-size: 17px;
@@ -187,6 +211,11 @@
             </div>
           </div>
           <div class="routes">
+            <div class="actions">
+              <button id="generate-all">Generate Worksheet + Answer Sheet</button>
+              <button id="approve-worksheet" class="ghost">Approve Worksheet</button>
+              <button id="reject-answer" class="secondary">Reject Answer Sheet</button>
+            </div>
             Implemented local routes:
             <ul class="route-list">
               <li><code>/stories</code></li>
@@ -243,7 +272,10 @@
         answerStatus: document.getElementById("answer-status"),
         worksheetFrame: document.getElementById("worksheet-frame"),
         answerFrame: document.getElementById("answer-frame"),
-        error: document.getElementById("error")
+        error: document.getElementById("error"),
+        generateAll: document.getElementById("generate-all"),
+        approveWorksheet: document.getElementById("approve-worksheet"),
+        rejectAnswer: document.getElementById("reject-answer")
       };
 
       async function loadJson(pathname) {
@@ -254,28 +286,72 @@
         return response.json();
       }
 
+      async function postJson(pathname, payload) {
+        const response = await fetch(pathname, {
+          method: "POST",
+          headers: {
+            "content-type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error(`${pathname} returned ${response.status}`);
+        }
+
+        return response.json();
+      }
+
+      async function refresh() {
+        const [storyDetail, worksheet, answerSheet] = await Promise.all([
+          loadJson("/stories/example-story"),
+          loadJson("/artifacts/artifact-worksheet-beginner-v1"),
+          loadJson("/artifacts/artifact-answer-sheet-beginner-v1")
+        ]);
+
+        const story = storyDetail.story;
+        ids.title.textContent = story.title;
+        ids.lede.textContent = `Backend-owned preview data for ${story.title}. Use this page to inspect story metadata, real illustration URLs, and rendered worksheet HTML from the local API server.`;
+        ids.storyId.textContent = story.storyId;
+        ids.language.textContent = story.language;
+        ids.illustrationPath.textContent = story.illustrationUrl ?? "-";
+        ids.artifactCount.textContent = `${storyDetail.artifacts.length} artifacts`;
+        ids.image.src = story.illustrationUrl ?? "";
+        ids.image.alt = story.illustrationAlt ?? "";
+
+        ids.worksheetStatus.textContent = `${worksheet.templateId} · ${worksheet.status} · ${worksheet.reviewState}`;
+        ids.answerStatus.textContent = `${answerSheet.templateId} · ${answerSheet.status} · ${answerSheet.reviewState}`;
+        ids.worksheetFrame.srcdoc = worksheet.renderedHtml ?? "<p>No preview HTML</p>";
+        ids.answerFrame.srcdoc = answerSheet.renderedHtml ?? "<p>No preview HTML</p>";
+      }
+
       async function main() {
         try {
-          const [storyDetail, worksheet, answerSheet] = await Promise.all([
-            loadJson("/stories/example-story"),
-            loadJson("/artifacts/artifact-worksheet-beginner-v1"),
-            loadJson("/artifacts/artifact-answer-sheet-beginner-v1")
-          ]);
+          ids.generateAll.addEventListener("click", async () => {
+            await postJson("/stories/example-story/generate", {
+              storyId: "example-story",
+              artifactTypes: ["worksheet", "answer_sheet"]
+            });
+            await refresh();
+          });
 
-          const story = storyDetail.story;
-          ids.title.textContent = story.title;
-          ids.lede.textContent = `Backend-owned preview data for ${story.title}. Use this page to inspect story metadata, real illustration URLs, and rendered worksheet HTML from the local API server.`;
-          ids.storyId.textContent = story.storyId;
-          ids.language.textContent = story.language;
-          ids.illustrationPath.textContent = story.illustrationUrl ?? "-";
-          ids.artifactCount.textContent = `${storyDetail.artifacts.length} artifacts`;
-          ids.image.src = story.illustrationUrl ?? "";
-          ids.image.alt = story.illustrationAlt ?? "";
+          ids.approveWorksheet.addEventListener("click", async () => {
+            await postJson("/artifacts/artifact-worksheet-beginner-v1/review", {
+              action: "approve",
+              notes: "Approved from local preview"
+            });
+            await refresh();
+          });
 
-          ids.worksheetStatus.textContent = `${worksheet.templateId} · ${worksheet.envelope.model}`;
-          ids.answerStatus.textContent = `${answerSheet.templateId} · ${answerSheet.envelope.model}`;
-          ids.worksheetFrame.srcdoc = worksheet.renderedHtml ?? "<p>No preview HTML</p>";
-          ids.answerFrame.srcdoc = answerSheet.renderedHtml ?? "<p>No preview HTML</p>";
+          ids.rejectAnswer.addEventListener("click", async () => {
+            await postJson("/artifacts/artifact-answer-sheet-beginner-v1/review", {
+              action: "reject",
+              notes: "Needs answer-quality revision"
+            });
+            await refresh();
+          });
+
+          await refresh();
         } catch (error) {
           ids.error.hidden = false;
           ids.error.textContent = error instanceof Error ? error.message : String(error);
