@@ -10,136 +10,138 @@ function escapeHtml(value: string): string {
 }
 
 type WorksheetLevelMeta = {
-  chip: string;
-  title: string;
+  heading: string;
   guidance: string[];
-  accent: string;
+  headingColor: string;
+  stripeColors: string[];
+  questionMarkerMode: "number" | "mixed_dot";
 };
 
 function getLevelMeta(level: WorksheetArtifact["level"]): WorksheetLevelMeta {
   switch (level) {
     case "BEGINNER":
       return {
-        chip: "NIVA 1",
-        title: "Lasa pa raderna",
-        guidance: ["Svaren finns direkt i texten."],
-        accent: "#d85f21"
+        heading: "LASFORSTAELSE NIVA 1",
+        guidance: ["Lasa pa raderna (svaren finns direkt i texten)"],
+        headingColor: "#f2a03b",
+        stripeColors: ["#f2a03b"],
+        questionMarkerMode: "number"
       };
     case "INTERMEDIATE":
       return {
-        chip: "NIVA 2",
-        title: "Lasa mellan raderna",
-        guidance: ["Tolka texten, tank efter, dra slutsatser."],
-        accent: "#b94d18"
+        heading: "LASFORSTAELSE NIVA 2",
+        guidance: ["Lasa mellan raderna (tolka, tank efter, dra slutsatser)"],
+        headingColor: "#ee7d41",
+        stripeColors: ["#e66932"],
+        questionMarkerMode: "number"
       };
     case "ADVANCED":
       return {
-        chip: "NIVA 3",
-        title: "Lasa bortom raderna",
-        guidance: ["Tank langre, resonera och koppla till dig sjalv."],
-        accent: "#8f3f1d"
+        heading: "LASFORSTAELSE NIVA 3",
+        guidance: ["Lasa bortom raderna (tank langre, koppla till dig sjalv)"],
+        headingColor: "#df5c58",
+        stripeColors: ["#df5c58"],
+        questionMarkerMode: "number"
       };
     case "MIXED":
       return {
-        chip: "MIX",
-        title: "Blandad lasforstaelse",
+        heading: "LASFORSTAELSE MIX",
         guidance: [
-          "Kombinera svar direkt ur texten med tolkning och egen reflektion."
+          "Fragor 1 - 3: svaren finns direkt i texten",
+          "Fragor 4 - 5: tolka texten, tank efter, dra slutsatser",
+          "Fraga 6: tank langre, resonera, koppla till dig sjalv"
         ],
-        accent: "#c06a2f"
+        headingColor: "#dc5158",
+        stripeColors: ["#f2a03b", "#ee7d41", "#b52628"],
+        questionMarkerMode: "mixed_dot"
       };
     case "CREATIVE":
       return {
-        chip: "SKAPA",
-        title: "Kreativt arbete",
-        guidance: ["Skriv, beratta eller skapa vidare utifran texten."],
-        accent: "#9a5d1f"
+        heading: "KREATIVT ARBETE",
+        guidance: ["Skriv med egna ord eller beratta muntligt"],
+        headingColor: "#b52628",
+        stripeColors: ["#b52628"],
+        questionMarkerMode: "number"
       };
   }
 }
 
-function getPromptForAnswerFormat(answerFormat: string): string {
-  switch (answerFormat) {
-    case "short_text":
-      return "Skriv kort svar.";
-    case "long_text":
-      return "Skriv med egna ord.";
-    case "oral":
-      return "Beratta muntligt eller skriv kort.";
-    case "drawing":
-      return "Rita eller skriv.";
-    default:
-      return "";
+function getMixedDotColor(index: number): string {
+  if (index < 3) {
+    return "#f2a03b";
   }
+
+  if (index < 5) {
+    return "#e66932";
+  }
+
+  return "#b52628";
 }
 
-function renderAnswerSpace(answerFormat: string): string {
-  switch (answerFormat) {
-    case "short_text":
-      return `<div class="answer-lines answer-lines-short"><span></span><span></span></div>`;
-    case "long_text":
-      return `<div class="answer-lines answer-lines-long"><span></span><span></span><span></span><span></span></div>`;
-    case "oral":
-      return `<div class="answer-pill">Muntligt svar fungerar ocksa</div>`;
-    case "drawing":
-      return `<div class="answer-box"></div>`;
-    default:
-      return "";
-  }
+function renderIllustrationPanel(assetId: string): string {
+  return `
+    <div class="illustration-frame">
+      <div class="illustration-sky"></div>
+      <div class="illustration-moon"></div>
+      <div class="illustration-swirl"></div>
+      <div class="illustration-person"></div>
+      <div class="illustration-roof"></div>
+      <div class="illustration-caption">${escapeHtml(assetId)}</div>
+    </div>
+  `;
 }
 
-function renderQuestionList(artifact: WorksheetArtifact): string {
-  let questionNumber = 0;
+function renderQuestionList(artifact: WorksheetArtifact, meta: WorksheetLevelMeta): string {
+  const items = artifact.sections.flatMap((section) => section.items);
 
-  return artifact.sections
-    .map((section) => {
-      const items = section.items
-        .map((item) => {
-          questionNumber += 1;
-
-          return `
-            <li class="question-item">
-              <div class="question-row">
-                <span class="question-index">${questionNumber}.</span>
-                <div class="question-body">
-                  <span class="question-text">${escapeHtml(item.prompt)}</span>
-                  <div class="question-meta">
-                    <span class="skill-tag">${escapeHtml(item.skillType)}</span>
-                    <span class="answer-tag">${escapeHtml(getPromptForAnswerFormat(item.answerFormat))}</span>
-                  </div>
-                </div>
-              </div>
-              ${renderAnswerSpace(item.answerFormat)}
-            </li>
-          `;
-        })
-        .join("");
+  return items
+    .map((item, index) => {
+      const marker =
+        meta.questionMarkerMode === "mixed_dot"
+          ? `<span class="question-dot" style="background:${getMixedDotColor(index)}"></span>`
+          : `<span class="question-number">${index + 1}.</span>`;
 
       return `
-        <section class="section">
-          <div class="section-header">
-            <h2>${escapeHtml(section.heading)}</h2>
-            ${section.description ? `<p class="section-description">${escapeHtml(section.description)}</p>` : ""}
-          </div>
-          <ol class="question-list">${items}</ol>
-        </section>
+        <li class="question-item">
+          <div class="question-marker">${marker}</div>
+          <div class="question-text">${escapeHtml(item.prompt)}</div>
+        </li>
       `;
     })
     .join("");
 }
 
+function renderMetaFields(artifact: WorksheetArtifact): string {
+  const fields = [
+    `<div class="meta-row"><span class="meta-label">Arskurs:</span><span class="meta-line meta-line-short"></span></div>`
+  ];
+
+  const secondary: string[] = [];
+
+  if (artifact.printNotes.showNameField) {
+    secondary.push(`<div class="meta-row meta-row-inline"><span class="meta-label">Namn:</span><span class="meta-line"></span></div>`);
+  }
+
+  if (artifact.printNotes.showDateField) {
+    secondary.push(`<div class="meta-row meta-row-inline"><span class="meta-label">Datum:</span><span class="meta-line meta-line-date"></span></div>`);
+  }
+
+  fields.push(`<div class="meta-inline">${secondary.join("")}</div>`);
+
+  return fields.join("");
+}
+
+function renderStripes(colors: string[]): string {
+  return `
+    <div class="stripes">
+      ${colors.map((color) => `<span style="background:${color}"></span>`).join("")}
+    </div>
+  `;
+}
+
 export function renderWorksheetHtml(artifact: WorksheetArtifact): string {
-  const levelMeta = getLevelMeta(artifact.level);
-  const nameField = artifact.printNotes.showNameField
-    ? `<div class="meta-field"><span>Namn</span><strong></strong></div>`
-    : "";
-  const dateField = artifact.printNotes.showDateField
-    ? `<div class="meta-field"><span>Datum</span><strong></strong></div>`
-    : "";
-  const yearField = `<div class="meta-field"><span>Arskurs</span><strong></strong></div>`;
-  const guidanceItems = levelMeta.guidance
-    .map((item) => `<li>${escapeHtml(item)}</li>`)
-    .join("");
+  const meta = getLevelMeta(artifact.level);
+  const guidance = meta.guidance.map((line) => `<div class="guidance-line">${escapeHtml(line)}</div>`).join("");
 
   return `
     <!doctype html>
@@ -149,173 +151,189 @@ export function renderWorksheetHtml(artifact: WorksheetArtifact): string {
         <title>${escapeHtml(artifact.title)}</title>
         <style>
           :root {
-            --paper: #f4efe7;
-            --card: #fffdf8;
-            --ink: #1d1916;
-            --muted: #6e6258;
-            --accent: ${levelMeta.accent};
-            --line: #ddcfc1;
-            --soft: #efe4d8;
+            --ink: #343434;
+            --muted: #595959;
+            --rule: #cfcfcf;
+            --orange: #f2a03b;
+            --orange-deep: #e66932;
+            --red: #b52628;
           }
           @page {
             size: A4;
             margin: 0;
           }
           * { box-sizing: border-box; }
-          body {
+          html, body {
             margin: 0;
-            background: var(--paper);
+            background: white;
+          }
+          body {
             color: var(--ink);
-            font-family: Georgia, "Times New Roman", serif;
+            font-family: Arial, Helvetica, sans-serif;
           }
           .page {
             width: 210mm;
             min-height: 297mm;
-            margin: 0 auto;
-            padding: 14mm 14mm 12mm;
-            background:
-              radial-gradient(circle at top right, rgba(216, 95, 33, 0.08), transparent 30%),
-              linear-gradient(180deg, #f7f1ea 0%, #f4efe7 100%);
+            padding: 22mm 22mm 18mm 22mm;
           }
-          .sheet {
-            min-height: 269mm;
-            background: var(--card);
-            border: 1px solid rgba(110, 98, 88, 0.16);
-            border-radius: 22px;
-            box-shadow: 0 16px 40px rgba(65, 43, 25, 0.08);
-            overflow: hidden;
-          }
-          .hero {
+          .top {
             display: grid;
-            grid-template-columns: 1.4fr 0.8fr;
-            gap: 12mm;
-            padding: 14mm 14mm 10mm;
-            background:
-              linear-gradient(135deg, rgba(216, 95, 33, 0.10), rgba(216, 95, 33, 0.02)),
-              linear-gradient(180deg, #f7ecdf 0%, #fbf8f2 100%);
-            border-bottom: 1px solid rgba(110, 98, 88, 0.18);
+            grid-template-columns: 1fr 80mm;
+            gap: 10mm;
+            align-items: start;
           }
-          .eyebrow-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-          }
-          .eyebrow {
-            color: var(--accent);
-            font: 700 11px/1.2 Arial, sans-serif;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-          }
-          .school-chip {
-            display: inline-flex;
-            align-items: center;
-            padding: 4px 8px;
-            border-radius: 999px;
-            background: rgba(216, 95, 33, 0.12);
-            color: var(--accent);
-            font: 700 10px/1 Arial, sans-serif;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-          }
-          h1 {
-            margin: 0 0 8px;
-            font-size: 31px;
+          .title {
+            margin: 12px 0 4px;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 28px;
             font-weight: 400;
             line-height: 1.05;
-          }
-          .subtitle {
-            margin: 0 0 12px;
-            color: var(--muted);
-            font: 600 13px/1.4 Arial, sans-serif;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
+            color: #2f2a27;
           }
           .credits {
-            color: var(--muted);
-            font: 400 12px/1.5 Arial, sans-serif;
+            margin: 0;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 11px;
+            color: #453e39;
           }
-          .level-card {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 12px;
-            border-radius: 18px;
-            background: rgba(255, 255, 255, 0.72);
-            border: 1px solid rgba(216, 95, 33, 0.18);
+          .illustration-frame {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            border-radius: 8px;
+            background: linear-gradient(180deg, #0f1830 0%, #213049 58%, #35495c 100%);
           }
-          .level-chip {
-            display: inline-flex;
-            width: fit-content;
-            align-items: center;
-            padding: 5px 10px;
+          .illustration-sky {
+            position: absolute;
+            inset: 0;
+            background:
+              radial-gradient(circle at 75% 18%, rgba(255,255,255,0.22) 0 2%, transparent 2.5%),
+              radial-gradient(circle at 55% 14%, rgba(255,255,255,0.24) 0 1.6%, transparent 2%),
+              radial-gradient(circle at 22% 34%, rgba(255,255,255,0.18) 0 1.4%, transparent 1.8%);
+          }
+          .illustration-moon {
+            position: absolute;
+            top: 10%;
+            left: 60%;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 4px solid #d7f1ff;
+            border-right-color: transparent;
+            border-bottom-color: transparent;
+            transform: rotate(35deg);
+            opacity: 0.9;
+          }
+          .illustration-swirl {
+            position: absolute;
+            inset: 18% 12% 18% 18%;
+            border-radius: 48% 52% 44% 56% / 46% 45% 55% 54%;
+            background:
+              radial-gradient(circle at 30% 36%, rgba(243, 151, 168, 0.4), transparent 22%),
+              radial-gradient(circle at 60% 45%, rgba(114, 168, 193, 0.28), transparent 26%),
+              linear-gradient(145deg, rgba(157, 204, 214, 0.42), rgba(86, 98, 118, 0.45));
+            border: 3px solid rgba(211, 232, 238, 0.62);
+            box-shadow: inset 0 0 0 2px rgba(255,255,255,0.14);
+          }
+          .illustration-person {
+            position: absolute;
+            left: 27%;
+            top: 41%;
+            width: 22%;
+            height: 30%;
+            border-radius: 40% 45% 28% 38%;
+            background:
+              radial-gradient(circle at 55% 20%, #d6b0a5 0 18%, transparent 19%),
+              linear-gradient(180deg, #7b2c40 0 28%, #3b8da5 28% 100%);
+            transform: rotate(8deg);
+            box-shadow: 18px -4px 0 -6px rgba(55, 27, 42, 0.72);
+          }
+          .illustration-roof {
+            position: absolute;
+            left: 8%;
+            right: 8%;
+            bottom: 0;
+            height: 18%;
+            background:
+              linear-gradient(135deg, transparent 0 6%, #412e36 6% 36%, transparent 36% 44%, #543843 44% 72%, transparent 72%),
+              linear-gradient(180deg, transparent 0 42%, #111826 42% 100%);
+          }
+          .illustration-caption {
+            position: absolute;
+            right: 8px;
+            bottom: 8px;
+            padding: 4px 6px;
             border-radius: 999px;
-            background: var(--accent);
-            color: white;
-            font: 700 11px/1 Arial, sans-serif;
+            background: rgba(255,255,255,0.14);
+            color: rgba(255,255,255,0.86);
+            font-size: 8px;
+            letter-spacing: 0.04em;
+          }
+          .section-title {
+            margin: 18px 0 2px;
+            font-size: 17px;
+            font-weight: 800;
             letter-spacing: 0.08em;
-            text-transform: uppercase;
+            color: #2a2a2a;
           }
-          .level-title {
-            margin: 14px 0 6px;
-            font-size: 22px;
-            line-height: 1.15;
-          }
-          .level-guidance {
+          .level-heading {
             margin: 0;
-            padding-left: 18px;
-            color: var(--muted);
-            font: 400 13px/1.5 Arial, sans-serif;
-          }
-          .meta {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 10px;
-            padding: 10mm 14mm 0;
-            font: 400 13px/1.4 Arial, sans-serif;
-          }
-          .meta-field {
-            display: grid;
-            gap: 6px;
-          }
-          .meta-field span {
-            color: var(--muted);
-            font: 700 11px/1 Arial, sans-serif;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-          }
-          .meta-field strong {
-            display: block;
-            height: 28px;
-            border-bottom: 1.5px solid var(--line);
-          }
-          .instructions {
-            margin: 0;
-            padding: 8mm 14mm 0;
-            color: var(--ink);
-            font: 400 14px/1.55 Arial, sans-serif;
-          }
-          .content {
-            padding: 8mm 14mm 10mm;
-          }
-          .section {
-            margin: 0 0 24px;
-            padding: 14px 16px 16px;
-            border: 1px solid var(--line);
-            border-radius: 18px;
-            background: linear-gradient(180deg, #fffdfa 0%, #fffaf3 100%);
-          }
-          .section-header {
-            margin: 0 0 14px;
-          }
-          h2 {
-            margin: 0 0 4px;
             font-size: 18px;
+            font-weight: 400;
+            letter-spacing: 0.06em;
+            color: ${meta.headingColor};
           }
-          .section-description {
-            margin: 0 0 12px;
-            color: var(--muted);
-            font: 400 13px/1.4 Arial, sans-serif;
+          .guidance {
+            margin: 3px 0 6px;
+            font-size: 11px;
+            line-height: 1.35;
+            color: #333;
+          }
+          .guidance-line + .guidance-line {
+            margin-top: 1px;
+          }
+          .stripes {
+            display: grid;
+            gap: 3px;
+            width: 112mm;
+            margin: 8px 0 18px;
+          }
+          .stripes span {
+            display: block;
+            height: 5px;
+          }
+          .meta-block {
+            margin-bottom: 18px;
+          }
+          .meta-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 0 10px;
+            font-size: 12px;
+            color: #3c3c3c;
+          }
+          .meta-label {
+            min-width: max-content;
+            font-weight: 700;
+          }
+          .meta-line {
+            display: block;
+            width: 86mm;
+            border-bottom: 1px solid #6c6c6c;
+            transform: translateY(2px);
+          }
+          .meta-line-short {
+            width: 36mm;
+          }
+          .meta-line-date {
+            width: 52mm;
+          }
+          .meta-inline {
+            display: flex;
+            gap: 8mm;
+            align-items: center;
           }
           .question-list {
             margin: 0;
@@ -323,151 +341,162 @@ export function renderWorksheetHtml(artifact: WorksheetArtifact): string {
             list-style: none;
           }
           .question-item {
-            margin: 0 0 16px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid rgba(221, 207, 193, 0.7);
-            font: 400 15px/1.5 Arial, sans-serif;
-          }
-          .question-item:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-          }
-          .question-row {
             display: grid;
-            grid-template-columns: 34px 1fr;
-            gap: 10px;
+            grid-template-columns: 14px 1fr;
+            gap: 8px;
+            margin: 0 0 24px;
+            font-size: 12px;
+            line-height: 1.35;
+            color: #3a3a3a;
           }
-          .question-index {
-            display: inline-flex;
-            width: 28px;
-            height: 28px;
-            align-items: center;
+          .question-marker {
+            display: flex;
+            align-items: flex-start;
             justify-content: center;
-            border-radius: 999px;
-            background: rgba(216, 95, 33, 0.12);
-            color: var(--accent);
-            font: 700 13px/1 Arial, sans-serif;
+            padding-top: 1px;
           }
-          .question-body {
-            min-width: 0;
+          .question-number {
+            font-weight: 400;
+            color: #3b3b3b;
+          }
+          .question-dot {
+            display: block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            transform: translateY(3px);
           }
           .question-text {
-            display: block;
-            margin-bottom: 7px;
-          }
-          .question-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 10px;
-          }
-          .skill-tag,
-          .answer-tag,
-          .answer-pill {
-            display: inline-flex;
-            width: fit-content;
-            padding: 4px 8px;
-            border-radius: 999px;
-            background: var(--soft);
-            color: var(--muted);
-            font: 700 10px/1.2 Arial, sans-serif;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-          }
-          .answer-lines {
-            display: grid;
-            gap: 8px;
-            margin-left: 44px;
-          }
-          .answer-lines span {
-            display: block;
-            border-bottom: 1px solid var(--line);
-          }
-          .answer-lines-short span {
-            min-height: 12px;
-          }
-          .answer-lines-long span {
-            min-height: 16px;
-          }
-          .answer-box {
-            height: 90px;
-            margin-left: 44px;
-            border: 1px dashed var(--line);
-            border-radius: 12px;
-            background: repeating-linear-gradient(
-              -45deg,
-              rgba(221, 207, 193, 0.1),
-              rgba(221, 207, 193, 0.1) 8px,
-              rgba(255, 255, 255, 0.2) 8px,
-              rgba(255, 255, 255, 0.2) 16px
-            );
+            padding-top: 0;
           }
           .footer {
+            position: relative;
+            margin-top: 30px;
+            padding-top: 14px;
+            border-top: 1px solid var(--rule);
             display: flex;
             justify-content: space-between;
-            gap: 12px;
-            padding: 0 14mm 10mm;
-            color: var(--muted);
-            font: 400 11px/1.4 Arial, sans-serif;
+            align-items: end;
+            gap: 10px;
           }
-          .footer strong {
-            font-weight: 700;
+          .copyright {
+            max-width: 92mm;
+            font-size: 7px;
+            line-height: 1.35;
+            color: #585858;
+          }
+          .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: Arial, Helvetica, sans-serif;
+          }
+          .brand-mark {
+            position: relative;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 3px solid #ef6b2f;
+          }
+          .brand-mark::before,
+          .brand-mark::after {
+            content: "";
+            position: absolute;
+            top: 6px;
+            width: 8px;
+            height: 8px;
+            border: 3px solid #ef6b2f;
+            border-radius: 50%;
+            background: white;
+          }
+          .brand-mark::before {
+            left: 2px;
+          }
+          .brand-mark::after {
+            right: 2px;
+          }
+          .brand-heart {
+            position: absolute;
+            left: 6px;
+            top: 10px;
+            width: 12px;
+            height: 12px;
+            transform: rotate(45deg);
+            background: #ef6b2f;
+          }
+          .brand-heart::before,
+          .brand-heart::after {
+            content: "";
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ef6b2f;
+          }
+          .brand-heart::before {
+            left: -6px;
+          }
+          .brand-heart::after {
+            top: -6px;
+          }
+          .brand-wordmark {
+            text-align: right;
+            line-height: 0.95;
+          }
+          .brand-top {
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            color: #ef6b2f;
+          }
+          .brand-bottom {
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            color: #888;
           }
           @media print {
-            body {
+            html, body {
               background: white;
-            }
-            .page {
-              padding: 0;
-            }
-            .sheet {
-              border: none;
-              border-radius: 0;
-              box-shadow: none;
-              min-height: 297mm;
             }
           }
         </style>
       </head>
       <body>
         <main class="page">
-          <section class="sheet">
-            <header class="hero">
-              <div>
-                <div class="eyebrow-row">
-                  <div class="school-chip">For School</div>
-                  <div class="eyebrow">Arbetsblad</div>
-                </div>
-                <h1>${escapeHtml(artifact.title)}</h1>
-                <p class="subtitle">${escapeHtml(artifact.subtitle)}</p>
-                <div class="credits">
-                  <strong>A Story A Day</strong><br />
-                  Litterart lararstod for utskrift
-                </div>
-              </div>
-              <aside class="level-card">
-                <div class="level-chip">${escapeHtml(levelMeta.chip)}</div>
-                <div>
-                  <h2 class="level-title">${escapeHtml(levelMeta.title)}</h2>
-                  <ul class="level-guidance">${guidanceItems}</ul>
-                </div>
-              </aside>
-            </header>
-            <div class="meta">
-              ${yearField}
-              ${nameField}
-              ${dateField}
+          <section class="top">
+            <div class="top-copy">
+              <h1 class="title">${escapeHtml(artifact.title)}</h1>
+              <p class="credits">Text: Emma Andersson Illustration: Jonn Clemente</p>
+
+              <div class="section-title">ARBETSBLAD</div>
+              <p class="level-heading">${escapeHtml(meta.heading)}</p>
+              <div class="guidance">${guidance}</div>
+              ${renderStripes(meta.stripeColors)}
             </div>
-            <p class="instructions">${escapeHtml(artifact.studentInstructions)}</p>
-            <div class="content">
-              ${renderQuestionList(artifact)}
-            </div>
-            <footer class="footer">
-              <div>Utskriftsmall for klassrumsbruk</div>
-              <div><strong>${escapeHtml(levelMeta.chip)}</strong> · ${escapeHtml(levelMeta.title)}</div>
-            </footer>
+            ${renderIllustrationPanel(artifact.storyId)}
           </section>
+
+          <section class="meta-block">
+            ${renderMetaFields(artifact)}
+          </section>
+
+          <ol class="question-list">
+            ${renderQuestionList(artifact, meta)}
+          </ol>
+
+          <footer class="footer">
+            <div class="copyright">
+              All rights reserved A story a day© 2026. Prohibited to copy or distribute for commercial
+              use in any way, or use without license approved by A story a day AB.
+            </div>
+            <div class="brand">
+              <div class="brand-mark"><span class="brand-heart"></span></div>
+              <div class="brand-wordmark">
+                <div class="brand-top">ASTORYADAY</div>
+                <div class="brand-bottom">FOR SCHOOL</div>
+              </div>
+            </div>
+          </footer>
         </main>
       </body>
     </html>

@@ -354,3 +354,26 @@ Next recommended step:
 
 - validate the upgraded template through the PDF renderer outside sandbox restrictions
 - then add a dedicated answer-sheet print template
+
+### 2026-03-16 - Codex
+
+What changed:
+
+- rebuilt the worksheet print shell to follow the reference PDFs much more closely
+- switched from the previous branded card layout to a sparse editorial page layout
+- matched the top title block, top-right illustration area, colored level header, metadata lines, footer rule, and mixed-question marker behavior
+
+Files touched:
+
+- `packages/renderer/src/worksheet-html.ts`
+- `fixtures/generated/artifact-detail.generated.json`
+
+Open questions:
+
+- whether we should add real illustration URLs to the story schema so the renderer can use the actual uploaded art instead of a placeholder panel
+- whether the footer should use a real logo asset rather than CSS recreation
+
+Next recommended step:
+
+- add dedicated illustration-url support to the canonical story/rendering path
+- then build the answer-sheet variant against the same page shell
