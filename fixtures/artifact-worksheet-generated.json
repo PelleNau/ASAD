@@ -1,0 +1,56 @@
+{
+  "envelope": {
+    "storyId": "story-drommakarens-assistent",
+    "artifactType": "worksheet",
+    "schemaVersion": "0.1.0",
+    "promptFamily": "ASAD_WORKSHEET_FORMAT_STANDARD",
+    "promptVersion": "0.1.0",
+    "model": "gpt-4o-mini",
+    "generatedAt": "2026-03-16T15:10:00.000Z"
+  },
+  "artifactId": "artifact-worksheet-beginner-v1",
+  "title": "Drommakarens assistent - arbetsblad",
+  "status": "generated",
+  "reviewState": "not_required",
+  "templateId": "worksheet-standard-v1",
+  "result": {
+    "artifactType": "worksheet",
+    "storyId": "story-drommakarens-assistent",
+    "level": "BEGINNER",
+    "title": "Drommakarens assistent",
+    "subtitle": "LASFORSTAELSE NIVÅ 1",
+    "studentInstructions": "Las texten och svara pa fragorna.",
+    "sections": [
+      {
+        "type": "questions",
+        "heading": "Fraga och svar",
+        "description": "Svaren finns direkt i texten.",
+        "items": [
+          {
+            "id": "q1",
+            "prompt": "Hur gammal ar berattarjaget i borjan av berattelsen?",
+            "skillType": "retrieval",
+            "answerFormat": "short_text",
+            "teacherIntent": "Kontrollerar direkt information i texten."
+          },
+          {
+            "id": "q2",
+            "prompt": "Vad gjorde att hen inte ville sova?",
+            "skillType": "retrieval",
+            "answerFormat": "short_text",
+            "teacherIntent": "Fokuserar pa central handelse och orsak."
+          }
+        ]
+      }
+    ],
+    "printNotes": {
+      "showNameField": true,
+      "showDateField": true
+    }
+  },
+  "renderedHtml": "<!doctype html><html><body>preview omitted</body></html>",
+  "previewUrl": null,
+  "pdfUrl": null,
+  "issues": []
+}
+

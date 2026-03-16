@@ -1,0 +1,53 @@
+{
+  "envelope": {
+    "storyId": "story-drommakarens-assistent",
+    "artifactType": "teacher_notes",
+    "schemaVersion": "0.1.0",
+    "promptFamily": "ASAD_TEACHER_NOTES_GENERATOR",
+    "promptVersion": "0.1.0",
+    "model": "gpt-4o-mini",
+    "generatedAt": "2026-03-16T15:14:00.000Z"
+  },
+  "artifactId": "artifact-teacher-notes-v1",
+  "title": "Drommakarens assistent - lararstod",
+  "status": "approved",
+  "reviewState": "approved",
+  "templateId": "teacher-notes-v1",
+  "result": {
+    "artifactType": "teacher_notes",
+    "storyId": "story-drommakarens-assistent",
+    "title": "Drommakarens assistent - lararstod",
+    "summary": "Lararnoteringar med fokus pa kanslor, mod och tolkning.",
+    "learningFocus": [
+      "lasforstaelse",
+      "tolka kanslor",
+      "samtala om budskap"
+    ],
+    "beforeReading": [
+      "Visa bilden och samtala om vad eleverna tror att berattelsen handlar om."
+    ],
+    "duringReading": [
+      "Pausa vid nyckelscener och lat eleverna forutse vad som hander."
+    ],
+    "afterReading": [
+      "Lata eleverna resonera om mod och koppla till egna erfarenheter."
+    ],
+    "differentiation": {
+      "support": [
+        "Anvand hoglasning och bildstod."
+      ],
+      "stretch": [
+        "Be eleverna motivera sina svar med exempel ur texten."
+      ]
+    },
+    "sensitiveTopics": [],
+    "extensionActivities": [
+      "Skriv en ny scen dar huvudpersonen visar mod."
+    ]
+  },
+  "renderedHtml": null,
+  "previewUrl": "https://example.com/previews/artifact-teacher-notes-v1",
+  "pdfUrl": "https://example.com/pdfs/artifact-teacher-notes-v1.pdf",
+  "issues": []
+}
+

@@ -1,0 +1,52 @@
+{
+  "envelope": {
+    "storyId": "story-drommakarens-assistent",
+    "artifactType": "worksheet",
+    "schemaVersion": "0.1.0",
+    "promptFamily": "ASAD_LEVEL_DIFFERENTIATION",
+    "promptVersion": "0.1.0",
+    "model": "gpt-4o-mini",
+    "generatedAt": "2026-03-16T15:12:00.000Z"
+  },
+  "artifactId": "artifact-worksheet-mixed-v1",
+  "title": "Drommakarens assistent - mix",
+  "status": "needs_review",
+  "reviewState": "pending_review",
+  "templateId": "worksheet-standard-v1",
+  "result": {
+    "artifactType": "worksheet",
+    "storyId": "story-drommakarens-assistent",
+    "level": "MIXED",
+    "title": "Drommakarens assistent",
+    "subtitle": "LASFORSTAELSE MIX",
+    "studentInstructions": "Svara pa fragorna och resonera nar du kan.",
+    "sections": [
+      {
+        "type": "questions",
+        "heading": "Blandade fragor",
+        "description": "Direkta fragor och tankefragor blandas.",
+        "items": [
+          {
+            "id": "q1",
+            "prompt": "Hur visar berattelsen att mod kan vaxa fram?",
+            "skillType": "reflection",
+            "answerFormat": "long_text",
+            "teacherIntent": "Provar resonemangsniva i relation till budskap."
+          }
+        ]
+      }
+    ],
+    "printNotes": {
+      "showNameField": true,
+      "showDateField": true
+    }
+  },
+  "renderedHtml": "<!doctype html><html><body>preview omitted</body></html>",
+  "previewUrl": null,
+  "pdfUrl": null,
+  "issues": [
+    "Question count below expected threshold for mixed worksheet.",
+    "Needs editorial check for level balance."
+  ]
+}
+

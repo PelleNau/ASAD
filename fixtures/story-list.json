@@ -1,0 +1,45 @@
+[
+  {
+    "storyId": "story-drommakarens-assistent",
+    "title": "Drommakarens assistent",
+    "language": "sv",
+    "status": "needs_review",
+    "hasIllustration": true,
+    "artifactCounts": {
+      "total": 4,
+      "approved": 2,
+      "needsReview": 1,
+      "failed": 1
+    },
+    "updatedAt": "2026-03-16T15:05:00.000Z"
+  },
+  {
+    "storyId": "story-skogens-hemlighet",
+    "title": "Skogens hemlighet",
+    "language": "sv",
+    "status": "generated",
+    "hasIllustration": true,
+    "artifactCounts": {
+      "total": 3,
+      "approved": 0,
+      "needsReview": 0,
+      "failed": 0
+    },
+    "updatedAt": "2026-03-16T14:42:00.000Z"
+  },
+  {
+    "storyId": "story-havet-utanfor",
+    "title": "Havet utanfor",
+    "language": "sv",
+    "status": "draft",
+    "hasIllustration": false,
+    "artifactCounts": {
+      "total": 0,
+      "approved": 0,
+      "needsReview": 0,
+      "failed": 0
+    },
+    "updatedAt": "2026-03-16T13:20:00.000Z"
+  }
+]
+

@@ -1,0 +1,25 @@
+{
+  "envelope": {
+    "storyId": "story-drommakarens-assistent",
+    "artifactType": "curriculum_alignment",
+    "schemaVersion": "0.1.0",
+    "promptFamily": "ASAD_CURRICULUM_ALIGNMENT",
+    "promptVersion": "0.1.0",
+    "model": "gpt-4o-mini",
+    "generatedAt": "2026-03-16T15:15:00.000Z"
+  },
+  "artifactId": "artifact-curriculum-v1",
+  "title": "Drommakarens assistent - curriculum alignment",
+  "status": "failed",
+  "reviewState": "not_required",
+  "templateId": "teacher-notes-v1",
+  "result": null,
+  "renderedHtml": null,
+  "previewUrl": null,
+  "pdfUrl": null,
+  "issues": [
+    "Generation failed schema validation.",
+    "Missing rationale for one or more curriculum targets."
+  ]
+}
+

@@ -1,0 +1,12 @@
+{
+  "storyId": "story-drommakarens-assistent",
+  "sourceVersion": "sha256:story-drommakarens-assistent-v1",
+  "title": "Drommakarens assistent",
+  "language": "sv",
+  "storyText": "Nar jag var liten ville jag inte somna. Morkret kom med ljud, skuggor och tankar som vaxte sig stora...",
+  "illustrationAssetId": "asset-drommakarens-assistent-cover",
+  "targetAgeBand": "7-9",
+  "themes": ["mod", "sovn", "fantasi"],
+  "teachingHooks": ["kanslor i text", "tolka budskap", "samtala om radsla"]
+}
+
