@@ -1,4 +1,4 @@
-import type { WorksheetArtifact } from "@asad/schemas";
+import type { StoryRecord, WorksheetArtifact } from "@asad/schemas";
 
 function escapeHtml(value: string): string {
   return value
@@ -15,6 +15,13 @@ type WorksheetLevelMeta = {
   headingColor: string;
   stripeColors: string[];
   questionMarkerMode: "number" | "mixed_dot";
+};
+
+export type WorksheetRenderVariant = "worksheet" | "answer_sheet";
+
+export type WorksheetRenderContext = {
+  story?: Pick<StoryRecord, "illustrationUrl" | "illustrationAlt" | "illustrationAssetId">;
+  variant?: WorksheetRenderVariant;
 };
 
 function getLevelMeta(level: WorksheetArtifact["level"]): WorksheetLevelMeta {
@@ -78,7 +85,17 @@ function getMixedDotColor(index: number): string {
   return "#b52628";
 }
 
-function renderIllustrationPanel(assetId: string): string {
+function renderIllustrationPanel(story?: Pick<StoryRecord, "illustrationUrl" | "illustrationAlt" | "illustrationAssetId">): string {
+  if (story?.illustrationUrl) {
+    return `
+      <div class="illustration-frame">
+        <img class="illustration-image" src="${escapeHtml(story.illustrationUrl)}" alt="${escapeHtml(
+          story.illustrationAlt ?? ""
+        )}" />
+      </div>
+    `;
+  }
+
   return `
     <div class="illustration-frame">
       <div class="illustration-sky"></div>
@@ -86,12 +103,12 @@ function renderIllustrationPanel(assetId: string): string {
       <div class="illustration-swirl"></div>
       <div class="illustration-person"></div>
       <div class="illustration-roof"></div>
-      <div class="illustration-caption">${escapeHtml(assetId)}</div>
+      <div class="illustration-caption">${escapeHtml(story?.illustrationAssetId ?? "illustration")}</div>
     </div>
   `;
 }
 
-function renderQuestionList(artifact: WorksheetArtifact, meta: WorksheetLevelMeta): string {
+function renderQuestionList(artifact: WorksheetArtifact, meta: WorksheetLevelMeta, variant: WorksheetRenderVariant): string {
   const items = artifact.sections.flatMap((section) => section.items);
 
   return items
@@ -104,7 +121,18 @@ function renderQuestionList(artifact: WorksheetArtifact, meta: WorksheetLevelMet
       return `
         <li class="question-item">
           <div class="question-marker">${marker}</div>
-          <div class="question-text">${escapeHtml(item.prompt)}</div>
+          <div class="question-copy">
+            <div class="question-text">${escapeHtml(item.prompt)}</div>
+            ${
+              variant === "answer_sheet"
+                ? `<div class="answer-key">${
+                    item.sampleAnswer
+                      ? `<span class="answer-key-label">Forslag pa svar:</span> ${escapeHtml(item.sampleAnswer)}`
+                      : `<span class="answer-key-label">Forslag pa svar:</span> Oppet resonemangssvar.`
+                  }</div>`
+                : ""
+            }
+          </div>
         </li>
       `;
     })
@@ -139,9 +167,16 @@ function renderStripes(colors: string[]): string {
   `;
 }
 
-export function renderWorksheetHtml(artifact: WorksheetArtifact): string {
+export function renderWorksheetHtml(
+  artifact: WorksheetArtifact,
+  context: WorksheetRenderContext = {}
+): string {
   const meta = getLevelMeta(artifact.level);
+  const variant = context.variant ?? "worksheet";
   const guidance = meta.guidance.map((line) => `<div class="guidance-line">${escapeHtml(line)}</div>`).join("");
+  const sectionTitle = variant === "answer_sheet" ? "FACIT" : "ARBETSBLAD";
+  const footerWordmark = variant === "answer_sheet" ? "LARARVERSION" : "FOR SCHOOL";
+  const subtitleHeading = variant === "answer_sheet" ? artifact.subtitle || "FACIT" : meta.heading;
 
   return `
     <!doctype html>
@@ -203,6 +238,12 @@ export function renderWorksheetHtml(artifact: WorksheetArtifact): string {
             overflow: hidden;
             border-radius: 8px;
             background: linear-gradient(180deg, #0f1830 0%, #213049 58%, #35495c 100%);
+          }
+          .illustration-image {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
           }
           .illustration-sky {
             position: absolute;
@@ -282,7 +323,7 @@ export function renderWorksheetHtml(artifact: WorksheetArtifact): string {
             font-size: 18px;
             font-weight: 400;
             letter-spacing: 0.06em;
-            color: ${meta.headingColor};
+            color: ${variant === "answer_sheet" ? "#b52628" : meta.headingColor};
           }
           .guidance {
             margin: 3px 0 6px;
@@ -368,6 +409,16 @@ export function renderWorksheetHtml(artifact: WorksheetArtifact): string {
           }
           .question-text {
             padding-top: 0;
+          }
+          .answer-key {
+            margin-top: 6px;
+            font-size: 11px;
+            line-height: 1.45;
+            color: #5a5a5a;
+          }
+          .answer-key-label {
+            font-weight: 700;
+            color: #363636;
           }
           .footer {
             position: relative;
@@ -468,12 +519,12 @@ export function renderWorksheetHtml(artifact: WorksheetArtifact): string {
               <h1 class="title">${escapeHtml(artifact.title)}</h1>
               <p class="credits">Text: Emma Andersson Illustration: Jonn Clemente</p>
 
-              <div class="section-title">ARBETSBLAD</div>
-              <p class="level-heading">${escapeHtml(meta.heading)}</p>
+              <div class="section-title">${escapeHtml(sectionTitle)}</div>
+              <p class="level-heading">${escapeHtml(subtitleHeading)}</p>
               <div class="guidance">${guidance}</div>
-              ${renderStripes(meta.stripeColors)}
+              ${renderStripes(variant === "answer_sheet" ? ["#b52628"] : meta.stripeColors)}
             </div>
-            ${renderIllustrationPanel(artifact.storyId)}
+            ${renderIllustrationPanel(context.story)}
           </section>
 
           <section class="meta-block">
@@ -481,7 +532,7 @@ export function renderWorksheetHtml(artifact: WorksheetArtifact): string {
           </section>
 
           <ol class="question-list">
-            ${renderQuestionList(artifact, meta)}
+            ${renderQuestionList(artifact, meta, variant)}
           </ol>
 
           <footer class="footer">
@@ -493,7 +544,7 @@ export function renderWorksheetHtml(artifact: WorksheetArtifact): string {
               <div class="brand-mark"><span class="brand-heart"></span></div>
               <div class="brand-wordmark">
                 <div class="brand-top">ASTORYADAY</div>
-                <div class="brand-bottom">FOR SCHOOL</div>
+                <div class="brand-bottom">${escapeHtml(footerWordmark)}</div>
               </div>
             </div>
           </footer>

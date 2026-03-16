@@ -377,3 +377,34 @@ Next recommended step:
 
 - add dedicated illustration-url support to the canonical story/rendering path
 - then build the answer-sheet variant against the same page shell
+
+### 2026-03-16 - Codex
+
+What changed:
+
+- added renderable illustration fields to the canonical story record
+- added optional sample-answer fields to worksheet questions for teacher-facing output
+- implemented a dedicated answer-sheet print variant on the same worksheet shell
+- generated an answer-sheet detail snapshot alongside the existing worksheet snapshot
+
+Files touched:
+
+- `packages/schemas/src/story.ts`
+- `packages/schemas/src/worksheet.ts`
+- `packages/prompts/src/runner.ts`
+- `packages/renderer/src/templates.ts`
+- `packages/renderer/src/worksheet-html.ts`
+- `apps/api/src/index.ts`
+- `apps/api/src/fixtures.ts`
+- `apps/worker/src/index.ts`
+- `scripts/generate-fixtures.mjs`
+
+Open questions:
+
+- whether `sampleAnswer` should later split into `facitText` and `assessmentNote`
+- whether the frontend should expose worksheet and answer-sheet previews side by side in the same story workspace
+
+Next recommended step:
+
+- render real uploaded illustration assets instead of fixture data URIs
+- then tighten the answer-sheet content model if teacher feedback shows the current sample-answer field is too loose

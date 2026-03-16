@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import {
+  buildAnswerSheetDetailFixture,
   buildArtifactDetailFixture,
   buildArtifactListFixture,
   buildCreateStoryFixture,
@@ -26,6 +27,7 @@ async function main() {
   await writeJson("generation-accepted.generated.json", await buildGenerationAcceptedFixture());
   await writeJson("artifact-list.generated.json", await buildArtifactListFixture());
   await writeJson("artifact-detail.generated.json", await buildArtifactDetailFixture());
+  await writeJson("answer-sheet-detail.generated.json", await buildAnswerSheetDetailFixture());
 
   process.stdout.write(`Generated fixtures written to ${outputDir}\n`);
 }

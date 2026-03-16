@@ -50,21 +50,24 @@ function buildWorksheetFromStory(story: StoryRecord): WorksheetArtifact {
             prompt: "Vem handlar berattelsen om?",
             skillType: "retrieval",
             answerFormat: "short_text",
-            teacherIntent: "Kontrollerar grundlaggande forstaelse av huvudperson."
+            teacherIntent: "Kontrollerar grundlaggande forstaelse av huvudperson.",
+            sampleAnswer: "Berattelsen handlar om huvudpersonen och hens upplevelse av att vara radd."
           },
           {
             id: "q2",
             prompt: "Hur kanner sig huvudpersonen i borjan av berattelsen?",
             skillType: "inference",
             answerFormat: "short_text",
-            teacherIntent: "Tranar elevens formaga att tolka kanslor i text."
+            teacherIntent: "Tranar elevens formaga att tolka kanslor i text.",
+            sampleAnswer: "Huvudpersonen verkar orolig och radd."
           },
           {
             id: "q3",
             prompt: "Vad tycker du ar viktigt i berattelsen, och varfor?",
             skillType: "reflection",
             answerFormat: "long_text",
-            teacherIntent: "Oppnar for egen tolkning och resonemang."
+            teacherIntent: "Oppnar for egen tolkning och resonemang.",
+            sampleAnswer: "Ett rimligt svar lyfter att modet vaxer fram nar huvudpersonen vagar prova trots sin radsla."
           }
         ]
       }
@@ -104,6 +107,7 @@ function buildStoryContext(story: StoryRecord): string {
     `Themes: ${story.themes.length > 0 ? story.themes.join(", ") : "none provided"}`,
     `Teaching hooks: ${story.teachingHooks.length > 0 ? story.teachingHooks.join(", ") : "none provided"}`,
     `Illustration asset ID: ${story.illustrationAssetId}`,
+    `Illustration URL: ${story.illustrationUrl ?? "none provided"}`,
     "Story text:",
     story.storyText
   ].join("\n");
@@ -122,7 +126,6 @@ function getPromptDefinition(context: PromptExecutionContext): ArtifactPromptDef
 
   switch (context.artifactType) {
     case "worksheet":
-    case "answer_sheet":
       return {
         systemPrompt: sharedSystemPrompt,
         userPrompt: [
@@ -136,6 +139,25 @@ function getPromptDefinition(context: PromptExecutionContext): ArtifactPromptDef
           "- studentInstructions must be short and printable",
           "- subtitle should be a short uppercase worksheet label",
           "- teacherIntent should explain why each question is pedagogically useful",
+          "- sampleAnswer may be null for open reflection questions",
+          storyContext
+        ].join("\n"),
+        schema: worksheetArtifactSchema
+      };
+    case "answer_sheet":
+      return {
+        systemPrompt: sharedSystemPrompt,
+        userPrompt: [
+          "Generate an answer sheet artifact using the worksheet schema.",
+          `Prompt family: ${context.promptFamily}`,
+          `Prompt version: ${PROMPT_SCHEMA_VERSION}`,
+          "Requirements:",
+          "- artifactType must be worksheet",
+          "- include 3 to 5 questions total",
+          "- every question must include a concise sampleAnswer",
+          "- studentInstructions should indicate that this is a lararversion or facit",
+          "- subtitle should be a short uppercase answer-sheet label",
+          "- teacherIntent should remain included for backend/editorial use",
           storyContext
         ].join("\n"),
         schema: worksheetArtifactSchema
@@ -200,8 +222,15 @@ export class StaticPromptRunner implements PromptRunner {
   async run(context: PromptExecutionContext): Promise<PromptExecutionResult> {
     switch (context.artifactType) {
       case "worksheet":
-      case "answer_sheet":
         return buildWorksheetFromStory(context.story);
+      case "answer_sheet": {
+        const artifact = buildWorksheetFromStory(context.story);
+        return {
+          ...artifact,
+          subtitle: "FACIT",
+          studentInstructions: "Lararversion med forslag pa svar."
+        };
+      }
       case "teacher_notes":
         return buildTeacherNotesFromStory(context.story);
       default:

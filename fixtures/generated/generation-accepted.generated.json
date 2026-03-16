@@ -3,6 +3,7 @@
   "storyId": "example-story",
   "artifactTypes": [
     "worksheet",
+    "answer_sheet",
     "teacher_notes"
   ],
   "status": "generation_queued"

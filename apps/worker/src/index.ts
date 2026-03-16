@@ -67,7 +67,13 @@ export async function generateArtifactFromStory(
     generatedAt: new Date().toISOString()
   });
 
-  const renderedHtml = result.artifactType === "worksheet" ? renderWorksheetHtml(result) : null;
+  const renderedHtml =
+    result.artifactType === "worksheet"
+      ? renderWorksheetHtml(result, {
+          story,
+          variant: artifactType === "answer_sheet" ? "answer_sheet" : "worksheet"
+        })
+      : null;
 
   return {
     envelope,

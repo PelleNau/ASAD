@@ -11,6 +11,11 @@ const templates: PrintTemplate[] = [
     description: "Primary printable worksheet template matching the ASAD design system."
   },
   {
+    id: "answer-sheet-standard-v1",
+    artifactType: "answer_sheet",
+    description: "Teacher-facing answer sheet template matching the worksheet shell."
+  },
+  {
     id: "teacher-notes-v1",
     artifactType: "teacher_notes",
     description: "Teacher notes print template."

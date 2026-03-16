@@ -13,7 +13,8 @@ export const worksheetQuestionSchema = z.object({
   prompt: z.string().min(1),
   skillType: z.enum(["retrieval", "inference", "reflection", "discussion", "creative"]),
   answerFormat: z.enum(["short_text", "long_text", "oral", "drawing"]),
-  teacherIntent: z.string().min(1)
+  teacherIntent: z.string().min(1),
+  sampleAnswer: z.string().nullable().optional()
 });
 
 export const worksheetSectionSchema = z.object({
@@ -38,4 +39,3 @@ export const worksheetArtifactSchema = z.object({
 });
 
 export type WorksheetArtifact = z.infer<typeof worksheetArtifactSchema>;
-

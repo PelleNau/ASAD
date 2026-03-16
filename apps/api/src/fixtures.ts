@@ -38,6 +38,7 @@ export async function buildStoryListFixture(): Promise<StoryListResponse> {
 
 export async function buildStoryDetailFixture(): Promise<StoryDetailResponse> {
   const worksheet = await generateArtifactFromStory(apiBootstrap.story, "worksheet");
+  const answerSheet = await generateArtifactFromStory(apiBootstrap.story, "answer_sheet");
 
   return storyDetailResponseSchema.parse({
     story: apiBootstrap.story,
@@ -49,6 +50,18 @@ export async function buildStoryDetailFixture(): Promise<StoryDetailResponse> {
         status: "generated",
         reviewState: "not_required",
         templateId: "worksheet-standard-v1",
+        hasRenderedHtml: true,
+        hasPdf: false,
+        previewUrl: null,
+        pdfUrl: null
+      },
+      {
+        artifactId: "artifact-answer-sheet-beginner-v1",
+        artifactType: "answer_sheet",
+        title: answerSheet.result.title,
+        status: "generated",
+        reviewState: "not_required",
+        templateId: "answer-sheet-standard-v1",
         hasRenderedHtml: true,
         hasPdf: false,
         previewUrl: null,
@@ -70,13 +83,14 @@ export async function buildGenerationAcceptedFixture(): Promise<GenerationAccept
   return generationAcceptedResponseSchema.parse({
     jobId: "job-story-example-001",
     storyId: apiBootstrap.story.storyId,
-    artifactTypes: ["worksheet", "teacher_notes"],
+    artifactTypes: ["worksheet", "answer_sheet", "teacher_notes"],
     status: "generation_queued"
   });
 }
 
 export async function buildArtifactListFixture(): Promise<ArtifactListResponse> {
   const worksheet = await generateArtifactFromStory(apiBootstrap.story, "worksheet");
+  const answerSheet = await generateArtifactFromStory(apiBootstrap.story, "answer_sheet");
   const teacherNotes = await generateArtifactFromStory(apiBootstrap.story, "teacher_notes");
 
   return artifactListResponseSchema.parse({
@@ -89,6 +103,18 @@ export async function buildArtifactListFixture(): Promise<ArtifactListResponse> 
         status: "generated",
         reviewState: "not_required",
         templateId: "worksheet-standard-v1",
+        hasRenderedHtml: true,
+        hasPdf: false,
+        previewUrl: null,
+        pdfUrl: null
+      },
+      {
+        artifactId: "artifact-answer-sheet-beginner-v1",
+        artifactType: "answer_sheet",
+        title: answerSheet.result.title,
+        status: "generated",
+        reviewState: "not_required",
+        templateId: "answer-sheet-standard-v1",
         hasRenderedHtml: true,
         hasPdf: false,
         previewUrl: null,
@@ -122,6 +148,24 @@ export async function buildArtifactDetailFixture(): Promise<ArtifactDetailRespon
     templateId: "worksheet-standard-v1",
     result: worksheet.result,
     renderedHtml: worksheet.renderedHtml,
+    previewUrl: null,
+    pdfUrl: null,
+    issues: []
+  });
+}
+
+export async function buildAnswerSheetDetailFixture(): Promise<ArtifactDetailResponse> {
+  const answerSheet = await generateArtifactFromStory(apiBootstrap.story, "answer_sheet");
+
+  return artifactDetailResponseSchema.parse({
+    envelope: answerSheet.envelope,
+    artifactId: "artifact-answer-sheet-beginner-v1",
+    title: answerSheet.result.title,
+    status: "generated",
+    reviewState: "not_required",
+    templateId: "answer-sheet-standard-v1",
+    result: answerSheet.result,
+    renderedHtml: answerSheet.renderedHtml,
     previewUrl: null,
     pdfUrl: null,
     issues: []
