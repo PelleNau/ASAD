@@ -70,6 +70,11 @@ For local PDF rendering:
 - install Playwright browsers if needed
 - run the sample renderer outside restricted sandbox contexts when Chromium launch permissions are required on macOS
 
+For local asset-backed previews:
+
+- the repo now includes a local asset-store abstraction that writes illustration files under `artifacts/assets/`
+- set `ASAD_ROOT` when running scripts from outside the repo root if you need to override asset output location
+
 ## Core Principle
 
 Do not let the model generate final layout.

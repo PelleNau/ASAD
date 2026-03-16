@@ -4,3 +4,5 @@ dist
 coverage
 .turbo
 .corepack-cache
+artifacts/assets
+artifacts/samples

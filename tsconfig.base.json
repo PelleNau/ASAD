@@ -5,6 +5,7 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "paths": {
+      "@asad/assets": ["packages/assets/src/index.ts"],
       "@asad/api": ["apps/api/src/index.ts"],
       "@asad/api/fixtures": ["apps/api/src/fixtures.ts"],
       "@asad/prompts": ["packages/prompts/src/index.ts"],

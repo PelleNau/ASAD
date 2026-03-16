@@ -14,6 +14,9 @@ importers:
 
   apps/api:
     dependencies:
+      '@asad/assets':
+        specifier: workspace:*
+        version: link:../../packages/assets
       '@asad/prompts':
         specifier: workspace:*
         version: link:../../packages/prompts
@@ -42,6 +45,12 @@ importers:
       '@asad/schemas':
         specifier: workspace:*
         version: link:../../packages/schemas
+    devDependencies:
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.3
+
+  packages/assets:
     devDependencies:
       typescript:
         specifier: ^5.8.2

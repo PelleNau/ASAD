@@ -433,3 +433,30 @@ Next recommended step:
 
 - add an asset-storage abstraction in backend code
 - then replace fixture data URIs with asset-backed illustration URLs in the local generation path
+
+### 2026-03-16 - Codex
+
+What changed:
+
+- added a local asset-storage package for illustration files
+- switched the sample story/bootstrap path from inline data URIs to file-backed illustration URLs
+- made local scripts compatible with an explicit `ASAD_ROOT` override for asset output
+
+Files touched:
+
+- `packages/assets/*`
+- `apps/api/src/index.ts`
+- `apps/api/package.json`
+- `tsconfig.base.json`
+- `README.md`
+- `docs/build-sequence.md`
+
+Open questions:
+
+- whether to add a formal asset-record schema next
+- whether preview HTML should keep using `file://` URLs in dev or move to a tiny local asset server
+
+Next recommended step:
+
+- add an asset metadata schema and API response shape
+- then replace `file://` preview URLs with a local-served asset path for browser-facing environments

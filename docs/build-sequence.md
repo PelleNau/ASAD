@@ -47,13 +47,19 @@ Expected output:
 ## 4. Generate backend-derived fixtures
 
 ```bash
-COREPACK_HOME="$PWD/.corepack-cache" corepack pnpm fixtures:generate
+ASAD_ROOT="$PWD" COREPACK_HOME="$PWD/.corepack-cache" corepack pnpm fixtures:generate
 ```
 
 Generated outputs should appear in:
 
 ```text
 fixtures/generated/
+```
+
+Local illustration assets used by the sample/dev path are written to:
+
+```text
+artifacts/assets/
 ```
 
 ## 5. Render a sample PDF
