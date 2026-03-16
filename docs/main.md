@@ -205,6 +205,32 @@ Next recommended step:
 
 What changed:
 
+- added package export metadata for workspace packages
+- added a documented build/install sequence
+- prepared the monorepo for first real install/build validation
+
+Files touched:
+
+- `apps/api/package.json`
+- `apps/worker/package.json`
+- `packages/*/package.json`
+- `docs/build-sequence.md`
+
+Open questions:
+
+- whether additional TypeScript path aliases will be needed after first install
+- whether fixture generation should move out of `apps/api` into a dedicated package later
+
+Next recommended step:
+
+- run `pnpm install`
+- run `pnpm check`
+- fix the first real compile/runtime issues that appear
+
+### 2026-03-16 - Codex
+
+What changed:
+
 - added a formal handoff procedure for Loveable
 - documented repo split between `ASAD` and `blank-canvas`
 - documented required handoff format in both directions
