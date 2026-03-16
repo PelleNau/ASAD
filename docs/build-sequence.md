@@ -56,6 +56,16 @@ Generated outputs should appear in:
 fixtures/generated/
 ```
 
+## 5. Render a sample PDF
+
+```bash
+COREPACK_HOME="$PWD/.corepack-cache" corepack pnpm pdf:sample
+```
+
+Expected output:
+
+- `artifacts/samples/sample-worksheet.pdf`
+
 ## Current Notes
 
 - `apps/api` depends on `@asad/worker` for fixture generation helpers.
@@ -70,6 +80,7 @@ Most likely next issues after install/build:
 - package build layout cleanup once project references are introduced
 - missing dependencies once real rendering or OpenAI clients are added
 - PDF/runtime integration edge cases when Playwright is added
+- Chromium launch permissions in restricted macOS/sandbox environments
 
 ## Rule
 

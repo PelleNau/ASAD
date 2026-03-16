@@ -304,3 +304,30 @@ Next recommended step:
 
 - add PDF rendering with Playwright
 - then replace the static worksheet template with the first production worksheet design
+
+### 2026-03-16 - Codex
+
+What changed:
+
+- added a Playwright-backed HTML-to-PDF renderer in the renderer package
+- added a sample PDF script for rendering a worksheet artifact to disk
+- verified check/build/fixture generation after adding the renderer path
+
+Files touched:
+
+- `packages/renderer/src/pdf.ts`
+- `packages/renderer/src/index.ts`
+- `packages/renderer/package.json`
+- `scripts/render-sample-pdf.mjs`
+- `package.json`
+- `docs/build-sequence.md`
+
+Open questions:
+
+- whether to commit generated sample PDFs or keep them runtime-only
+- whether preview PNG generation should be added alongside PDFs in the same renderer package
+
+Next recommended step:
+
+- validate `pnpm pdf:sample` outside the current sandboxed browser restriction
+- then upgrade the worksheet print template to the first production design pass

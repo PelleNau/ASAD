@@ -65,6 +65,11 @@ Optional environment variables:
 
 Without `OPENAI_API_KEY`, fixture generation and previews continue to work from deterministic static outputs.
 
+For local PDF rendering:
+
+- install Playwright browsers if needed
+- run the sample renderer outside restricted sandbox contexts when Chromium launch permissions are required on macOS
+
 ## Core Principle
 
 Do not let the model generate final layout.
