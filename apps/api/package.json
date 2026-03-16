@@ -10,10 +10,10 @@
   "dependencies": {
     "@asad/prompts": "workspace:*",
     "@asad/renderer": "workspace:*",
-    "@asad/schemas": "workspace:*"
+    "@asad/schemas": "workspace:*",
+    "@asad/worker": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.8.2"
   }
 }
-

@@ -175,3 +175,50 @@ Next recommended step:
 
 - add sample route contracts in code
 - add a script that emits one generated worksheet fixture from backend code
+
+### 2026-03-16 - Codex
+
+What changed:
+
+- added route-level API schemas in code
+- added fixture builder utilities in the API layer
+- added generated fixture script scaffold
+
+Files touched:
+
+- `packages/schemas/src/api.ts`
+- `apps/api/src/fixtures.ts`
+- `scripts/generate-fixtures.mjs`
+- `docs/generated-fixture-procedure.md`
+
+Open questions:
+
+- whether generated fixtures should stay committed or only be rebuilt locally
+- whether preview payloads should be inlined in list responses or only in detail responses
+
+Next recommended step:
+
+- install dependencies and verify build/check flow
+- then switch from static to real prompt runner integration
+
+### 2026-03-16 - Codex
+
+What changed:
+
+- added a formal handoff procedure for Loveable
+- documented repo split between `ASAD` and `blank-canvas`
+- documented required handoff format in both directions
+
+Files touched:
+
+- `docs/lovable-handoff-procedure.md`
+- `docs/main.md`
+
+Open questions:
+
+- whether Loveable should start with route skeleton only or full mock screen composition
+- whether frontend should keep fixture copies locally or read them manually during mockup phase
+
+Next recommended step:
+
+- tell Loveable to start in `blank-canvas` using the fixture and contract docs from `ASAD`

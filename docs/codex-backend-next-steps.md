@@ -177,3 +177,18 @@ When Codex changes a frontend-relevant contract, Codex should:
 3. add preview response schemas
 4. add a first render script that produces worksheet HTML from a fixture
 5. then begin real OpenAI integration
+
+## Progress
+
+Completed:
+
+- status and review-state schemas
+- frontend-facing JSON fixtures
+- route-level API contract schemas
+- first generated-fixture path scaffold
+
+Next:
+
+- install dependencies and validate the build
+- make generated fixtures executable in practice
+- replace static prompt runner with real OpenAI integration
