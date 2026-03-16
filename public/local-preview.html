@@ -108,7 +108,7 @@
       }
       .preview-grid {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 20px;
       }
       .preview-head {
@@ -212,7 +212,7 @@
           </div>
           <div class="routes">
             <div class="actions">
-              <button id="generate-all">Generate Worksheet + Answer Sheet</button>
+              <button id="generate-all">Generate All Artifacts</button>
               <button id="approve-worksheet" class="ghost">Approve Worksheet</button>
               <button id="reject-answer" class="secondary">Reject Answer Sheet</button>
             </div>
@@ -221,8 +221,8 @@
               <li><code>/stories</code></li>
               <li><code>/stories/example-story</code></li>
               <li><code>/stories/example-story/artifacts</code></li>
-              <li><code>/artifacts/artifact-worksheet-beginner-v1</code></li>
-              <li><code>/artifacts/artifact-answer-sheet-beginner-v1</code></li>
+              <li><code>/artifacts/:artifactId</code></li>
+              <li><code>/artifacts/:artifactId/preview</code></li>
               <li><code>/assets/local/:fileName</code></li>
             </ul>
           </div>
@@ -256,6 +256,17 @@
           <div class="status" id="answer-status">Loading answer sheet artifact...</div>
           <iframe id="answer-frame" title="Answer sheet preview"></iframe>
         </article>
+
+        <article class="panel">
+          <div class="preview-head">
+            <div>
+              <h2 class="preview-title">Teacher Notes</h2>
+              <div class="preview-subtitle">Planning and discussion support</div>
+            </div>
+          </div>
+          <div class="status" id="notes-status">Loading teacher notes artifact...</div>
+          <iframe id="notes-frame" title="Teacher notes preview"></iframe>
+        </article>
       </section>
     </main>
 
@@ -270,8 +281,10 @@
         image: document.getElementById("story-image"),
         worksheetStatus: document.getElementById("worksheet-status"),
         answerStatus: document.getElementById("answer-status"),
+        notesStatus: document.getElementById("notes-status"),
         worksheetFrame: document.getElementById("worksheet-frame"),
         answerFrame: document.getElementById("answer-frame"),
+        notesFrame: document.getElementById("notes-frame"),
         error: document.getElementById("error"),
         generateAll: document.getElementById("generate-all"),
         approveWorksheet: document.getElementById("approve-worksheet"),
@@ -303,10 +316,11 @@
       }
 
       async function refresh() {
-        const [storyDetail, worksheet, answerSheet] = await Promise.all([
+        const [storyDetail, worksheet, answerSheet, teacherNotes] = await Promise.all([
           loadJson("/stories/example-story"),
           loadJson("/artifacts/artifact-worksheet-beginner-v1"),
-          loadJson("/artifacts/artifact-answer-sheet-beginner-v1")
+          loadJson("/artifacts/artifact-answer-sheet-beginner-v1"),
+          loadJson("/artifacts/artifact-teacher-notes-v1")
         ]);
 
         const story = storyDetail.story;
@@ -321,8 +335,10 @@
 
         ids.worksheetStatus.textContent = `${worksheet.templateId} · ${worksheet.status} · ${worksheet.reviewState}`;
         ids.answerStatus.textContent = `${answerSheet.templateId} · ${answerSheet.status} · ${answerSheet.reviewState}`;
-        ids.worksheetFrame.srcdoc = worksheet.renderedHtml ?? "<p>No preview HTML</p>";
-        ids.answerFrame.srcdoc = answerSheet.renderedHtml ?? "<p>No preview HTML</p>";
+        ids.notesStatus.textContent = `${teacherNotes.templateId} · ${teacherNotes.status} · ${teacherNotes.reviewState}`;
+        ids.worksheetFrame.src = worksheet.previewUrl ?? "";
+        ids.answerFrame.src = answerSheet.previewUrl ?? "";
+        ids.notesFrame.src = teacherNotes.previewUrl ?? "";
       }
 
       async function main() {
@@ -330,7 +346,7 @@
           ids.generateAll.addEventListener("click", async () => {
             await postJson("/stories/example-story/generate", {
               storyId: "example-story",
-              artifactTypes: ["worksheet", "answer_sheet"]
+              artifactTypes: ["worksheet", "answer_sheet", "teacher_notes"]
             });
             await refresh();
           });

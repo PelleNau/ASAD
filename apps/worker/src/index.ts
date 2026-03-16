@@ -6,7 +6,7 @@ import {
   type StoryRecord
 } from "@asad/schemas";
 import { createPromptRunner, getPromptFamilyForArtifact, type PromptExecutionResult } from "@asad/prompts";
-import { renderWorksheetHtml } from "@asad/renderer";
+import { renderTeacherNotesHtml, renderWorksheetHtml } from "@asad/renderer";
 
 export type GenerationJobPlan = {
   storyId: string;
@@ -73,7 +73,9 @@ export async function generateArtifactFromStory(
           story,
           variant: artifactType === "answer_sheet" ? "answer_sheet" : "worksheet"
         })
-      : null;
+      : result.artifactType === "teacher_notes"
+        ? renderTeacherNotesHtml(result, { story })
+        : null;
 
   return {
     envelope,

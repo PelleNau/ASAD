@@ -102,6 +102,11 @@ type GeneratedArtifactResponse = {
 };
 ```
 
+`previewUrl` and `pdfUrl` may be either:
+
+- an absolute URL
+- a backend-owned relative route such as `/artifacts/:artifactId/preview`
+
 ## Status
 
 ```ts
@@ -217,6 +222,19 @@ Local dev fixture routes currently implemented as:
 
 - `GET /artifacts/artifact-worksheet-beginner-v1`
 - `GET /artifacts/artifact-answer-sheet-beginner-v1`
+- `GET /artifacts/artifact-teacher-notes-v1`
+
+### `GET /artifacts/:artifactId/preview`
+
+Purpose:
+
+- fetch backend-rendered HTML preview for an artifact when available
+
+Local dev routes currently implemented as:
+
+- `GET /artifacts/artifact-worksheet-beginner-v1/preview`
+- `GET /artifacts/artifact-answer-sheet-beginner-v1/preview`
+- `GET /artifacts/artifact-teacher-notes-v1/preview`
 
 ### `POST /artifacts/:artifactId/review`
 
@@ -249,9 +267,10 @@ Additional local route:
 
 Frontend should treat:
 
-- `renderedHtml` as preview content only
+- `renderedHtml` as backend-owned preview content only
 - `result` as structured artifact data
 - `envelope` as immutable generation metadata
 - `status` and `reviewState` as first-class workflow indicators
+- `previewUrl` as the preferred preview-loading contract when present
 
 Final PDF rendering remains backend-owned.

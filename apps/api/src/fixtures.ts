@@ -175,3 +175,21 @@ export async function buildAnswerSheetDetailFixture(): Promise<ArtifactDetailRes
     issues: []
   });
 }
+
+export async function buildTeacherNotesDetailFixture(): Promise<ArtifactDetailResponse> {
+  const teacherNotes = await generateArtifactFromStory(apiBootstrap.story, "teacher_notes");
+
+  return artifactDetailResponseSchema.parse({
+    envelope: teacherNotes.envelope,
+    artifactId: "artifact-teacher-notes-v1",
+    title: teacherNotes.result.title,
+    status: "approved",
+    reviewState: "approved",
+    templateId: "teacher-notes-v1",
+    result: teacherNotes.result,
+    renderedHtml: teacherNotes.renderedHtml,
+    previewUrl: null,
+    pdfUrl: null,
+    issues: []
+  });
+}

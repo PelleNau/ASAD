@@ -53,6 +53,9 @@ async function main() {
   const story = await fetchJson("/stories/example-story");
   const assetPath = story.body.story.illustrationUrl;
   const asset = await fetchAsset(assetPath);
+  const teacherNotes = await fetchJson("/artifacts/artifact-teacher-notes-v1");
+  const teacherNotesPreview =
+    teacherNotes.body.previewUrl ? await request(teacherNotes.body.previewUrl) : { status: 0, headers: {}, body: Buffer.alloc(0) };
 
   process.stdout.write(
     JSON.stringify(
@@ -61,7 +64,13 @@ async function main() {
         stories,
         storyStatus: story.status,
         assetPath,
-        asset
+        asset,
+        teacherNotes: {
+          status: teacherNotes.status,
+          previewUrl: teacherNotes.body.previewUrl,
+          previewStatus: teacherNotesPreview.status,
+          previewContentType: teacherNotesPreview.headers["content-type"] ?? null
+        }
       },
       null,
       2

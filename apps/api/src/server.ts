@@ -21,7 +21,8 @@ import {
   buildArtifactListFixture,
   buildCreateStoryFixture,
   buildStoryDetailFixture,
-  buildStoryListFixture
+  buildStoryListFixture,
+  buildTeacherNotesDetailFixture
 } from "./fixtures.js";
 import { getLocalAssetRouteResult } from "./index.js";
 
@@ -64,12 +65,14 @@ async function createInitialState(): Promise<DevServerState> {
   const storyDetail = await buildStoryDetailFixture();
   const worksheet = await buildArtifactDetailFixture();
   const answerSheet = await buildAnswerSheetDetailFixture();
+  const teacherNotes = await buildTeacherNotesDetailFixture();
 
   return {
     story: storyDetail.story,
     artifacts: new Map([
       [worksheet.artifactId, worksheet],
-      [answerSheet.artifactId, answerSheet]
+      [answerSheet.artifactId, answerSheet],
+      [teacherNotes.artifactId, teacherNotes]
     ])
   };
 }
@@ -118,8 +121,28 @@ function createArtifactPreview(artifact: ArtifactDetailResponse): ArtifactPrevie
   };
 }
 
+function getArtifactIdForType(artifactType: MaterialArtifactType): string {
+  switch (artifactType) {
+    case "worksheet":
+      return "artifact-worksheet-beginner-v1";
+    case "answer_sheet":
+      return "artifact-answer-sheet-beginner-v1";
+    case "teacher_notes":
+      return "artifact-teacher-notes-v1";
+    default:
+      throw new Error(`Dev server does not yet map artifact type ${artifactType} to a fixture artifact ID`);
+  }
+}
+
+function attachArtifactPreviewUrl(artifact: ArtifactDetailResponse): ArtifactDetailResponse {
+  return {
+    ...artifact,
+    previewUrl: artifact.renderedHtml ? `/artifacts/${artifact.artifactId}/preview` : artifact.previewUrl
+  };
+}
+
 function createStoryDetailPayload(state: DevServerState) {
-  const artifacts = Array.from(state.artifacts.values()).map(createArtifactPreview);
+  const artifacts = Array.from(state.artifacts.values()).map(attachArtifactPreviewUrl).map(createArtifactPreview);
 
   return storyDetailResponseSchema.parse({
     story: state.story,
@@ -128,7 +151,7 @@ function createStoryDetailPayload(state: DevServerState) {
 }
 
 function createStoryListPayload(state: DevServerState) {
-  const artifacts = Array.from(state.artifacts.values()).map(createArtifactPreview);
+  const artifacts = Array.from(state.artifacts.values()).map(attachArtifactPreviewUrl).map(createArtifactPreview);
 
   return storyListResponseSchema.parse({
     items: [
@@ -196,7 +219,7 @@ async function routeRequest(state: DevServerState, request: IncomingMessage, res
       200,
       await buildArtifactListFixture().then((payload) => ({
         ...payload,
-        items: Array.from(state.artifacts.values()).map(createArtifactPreview)
+        items: Array.from(state.artifacts.values()).map(attachArtifactPreviewUrl).map(createArtifactPreview)
       }))
     );
     return;
@@ -220,13 +243,53 @@ async function routeRequest(state: DevServerState, request: IncomingMessage, res
     return;
   }
 
-  if (method === "GET" && pathname === "/artifacts/artifact-worksheet-beginner-v1") {
-    sendJson(response, 200, state.artifacts.get("artifact-worksheet-beginner-v1"));
-    return;
+  if (method === "GET" && pathname.startsWith("/artifacts/")) {
+    const artifactPath = pathname.replace("/artifacts/", "");
+
+    if (artifactPath.endsWith("/preview")) {
+      const artifactId = artifactPath.replace("/preview", "");
+      const artifact = state.artifacts.get(artifactId);
+
+      if (!artifact) {
+        sendJson(response, 404, { error: "Artifact not found", artifactId });
+        return;
+      }
+
+      if (!artifact.renderedHtml) {
+        sendJson(response, 409, { error: "Artifact does not have rendered HTML preview", artifactId });
+        return;
+      }
+
+      response.writeHead(200, {
+        "content-type": "text/html; charset=utf-8"
+      });
+      response.end(artifact.renderedHtml);
+      return;
+    }
+
+    if (!artifactPath.includes("/")) {
+      const artifact = state.artifacts.get(artifactPath);
+
+      if (!artifact) {
+        sendJson(response, 404, { error: "Artifact not found", artifactId: artifactPath });
+        return;
+      }
+
+      sendJson(response, 200, attachArtifactPreviewUrl(artifact));
+      return;
+    }
   }
 
-  if (method === "GET" && pathname === "/artifacts/artifact-answer-sheet-beginner-v1") {
-    sendJson(response, 200, state.artifacts.get("artifact-answer-sheet-beginner-v1"));
+  if (method === "GET" && pathname === "/stories/example-story/generate/options") {
+    sendJson(response, 200, {
+      storyId: state.story.storyId,
+      artifactTypes: ["worksheet", "answer_sheet", "teacher_notes"],
+      mappedArtifactIds: {
+        worksheet: getArtifactIdForType("worksheet"),
+        answer_sheet: getArtifactIdForType("answer_sheet"),
+        teacher_notes: getArtifactIdForType("teacher_notes")
+      }
+    });
     return;
   }
 

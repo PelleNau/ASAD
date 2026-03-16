@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { generationArtifactEnvelopeSchema, materialArtifactTypeSchema } from "./material-request.js";
 
+const routeOrUrlSchema = z.union([z.string().url(), z.string().regex(/^\//)]);
+
 export const generationStatusSchema = z.enum([
   "draft",
   "uploaded",
@@ -51,8 +53,8 @@ export const artifactPreviewSchema = z.object({
   templateId: z.string().min(1),
   hasRenderedHtml: z.boolean(),
   hasPdf: z.boolean(),
-  previewUrl: z.string().url().nullable(),
-  pdfUrl: z.string().url().nullable()
+  previewUrl: routeOrUrlSchema.nullable(),
+  pdfUrl: routeOrUrlSchema.nullable()
 });
 
 export type ArtifactPreview = z.infer<typeof artifactPreviewSchema>;
@@ -66,8 +68,8 @@ export const generatedArtifactResponseSchema = z.object({
   templateId: z.string().min(1),
   result: z.unknown(),
   renderedHtml: z.string().nullable(),
-  previewUrl: z.string().url().nullable(),
-  pdfUrl: z.string().url().nullable(),
+  previewUrl: routeOrUrlSchema.nullable(),
+  pdfUrl: routeOrUrlSchema.nullable(),
   issues: z.array(z.string()).default([])
 });
 

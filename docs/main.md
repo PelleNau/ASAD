@@ -232,7 +232,7 @@ Next recommended step:
 What changed:
 
 - added a formal handoff procedure for Loveable
-- documented frontend handoff expectations in the shared `ASAD` repo
+- documented repo split between `ASAD` and `blank-canvas`
 - documented required handoff format in both directions
 
 Files touched:
@@ -247,7 +247,7 @@ Open questions:
 
 Next recommended step:
 
-- tell Loveable to start in `ASAD` using the fixture and contract docs
+- tell Loveable to start in `blank-canvas` using the fixture and contract docs from `ASAD`
 
 ### 2026-03-16 - Codex
 
@@ -612,4 +612,58 @@ Open questions:
 Next recommended step:
 
 - hand `docs/frontend-specification.md` to Loveable as the active UI brief
-- build the first route-level mockups in `ASAD`
+- build the first route-level mockups in `blank-canvas`
+
+### 2026-03-16 - Codex
+
+What changed:
+
+- reverted the coordination docs back to the split-repo model
+- restored `blank-canvas` as the frontend implementation target
+- kept `ASAD` as the backend source of truth for contracts, fixtures, and specs
+
+Files touched:
+
+- `docs/lovable-handoff-procedure.md`
+- `docs/main.md`
+
+Open questions:
+
+- whether `blank-canvas` will be made available locally in this workspace or only via GitHub Desktop
+- whether frontend handoff docs should also be copied into the frontend repo once it is available
+
+Next recommended step:
+
+- clone or add `blank-canvas` locally
+- then copy the frontend handoff/spec docs into that repo and prepare the push there
+
+### 2026-03-16 - Codex
+
+What changed:
+
+- added teacher-notes HTML rendering in the backend renderer
+- generalized the local API from hardcoded artifact detail routes to generic artifact and preview routes
+- updated the backend-owned local preview page to consume preview URLs instead of raw inline HTML
+
+Files touched:
+
+- `packages/renderer/src/teacher-notes-html.ts`
+- `packages/renderer/src/index.ts`
+- `apps/worker/src/index.ts`
+- `apps/api/src/fixtures.ts`
+- `apps/api/src/server.ts`
+- `public/local-preview.html`
+- `packages/schemas/src/status.ts`
+- `scripts/probe-api-server.mjs`
+- `docs/api-contracts.md`
+- `docs/build-sequence.md`
+
+Open questions:
+
+- whether `previewUrl` should remain relative in all environments or be normalized to absolute URLs outside local/dev
+- whether teacher notes should stay `approved` by default in the local fixture state or also move through pending review
+
+Next recommended step:
+
+- expose the same generic artifact preview contract from the eventual production API layer
+- then let Loveable build against `/artifacts/:artifactId` plus `/artifacts/:artifactId/preview`
