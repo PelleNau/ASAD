@@ -72,6 +72,16 @@ Expected output:
 
 - `artifacts/samples/sample-worksheet.pdf`
 
+## 6. Probe local asset serving
+
+```bash
+ASAD_ROOT="$PWD" COREPACK_HOME="$PWD/.corepack-cache" corepack pnpm asset:probe
+```
+
+Expected output:
+
+- JSON describing the local asset route result for the sample illustration
+
 ## Current Notes
 
 - `apps/api` depends on `@asad/worker` for fixture generation helpers.

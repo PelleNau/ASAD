@@ -1,4 +1,9 @@
-import { createExampleIllustrationSvg, createLocalAssetStore } from "@asad/assets";
+import {
+  LOCAL_ASSET_PUBLIC_PREFIX,
+  createExampleIllustrationSvg,
+  createLocalAssetStore,
+  readLocalAsset
+} from "@asad/assets";
 import {
   createMaterialGenerationRequest,
   createStoryRecord,
@@ -39,8 +44,35 @@ export const apiBootstrap = {
   story,
   request,
   promptFamilies: getPromptFamilyCatalog(),
-  templates: getTemplateCatalog()
+  templates: getTemplateCatalog(),
+  assetPublicPrefix: LOCAL_ASSET_PUBLIC_PREFIX
 };
+
+export type AssetRouteResult = {
+  status: 200 | 404 | 400;
+  headers: Record<string, string>;
+  body: Uint8Array | null;
+  storagePath: string | null;
+  publicPath: string;
+};
+
+export async function getLocalAssetRouteResult(publicPath: string): Promise<AssetRouteResult> {
+  const asset = await readLocalAsset(workspaceRoot, publicPath);
+
+  return {
+    status: asset.status,
+    headers:
+      asset.status === 200 && asset.contentType
+        ? {
+            "content-type": asset.contentType,
+            "cache-control": "public, max-age=3600"
+          }
+        : {},
+    body: asset.body,
+    storagePath: asset.storagePath,
+    publicPath: asset.publicPath
+  };
+}
 
 export async function generateWorksheetPreview(storyRecord: StoryRecord) {
   const artifactType = "worksheet";

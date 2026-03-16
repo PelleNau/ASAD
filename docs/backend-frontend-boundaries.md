@@ -123,6 +123,17 @@ Backend returns:
 - PDF URL if rendered
 - review status
 
+### 3a. Local asset retrieval contract
+
+Backend should support:
+
+- `GET /assets/local/:fileName`
+
+Frontend should:
+
+- treat returned `illustrationUrl` / `renderUrl` as backend-owned
+- not rewrite or infer asset storage paths
+
 ### 4. Review contract
 
 Frontend sends:

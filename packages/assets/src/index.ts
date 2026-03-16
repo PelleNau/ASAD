@@ -1,5 +1,8 @@
 import { mkdirSync, writeFileSync } from "node:fs";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
+
+export const LOCAL_ASSET_PUBLIC_PREFIX = "/assets/local/";
 
 export type LocalIllustrationAsset = {
   assetId: string;
@@ -22,6 +25,14 @@ export type StoreIllustrationInput = {
 
 export type LocalAssetStore = {
   storeIllustration(input: StoreIllustrationInput): LocalIllustrationAsset;
+};
+
+export type LocalAssetReadResult = {
+  status: 200 | 404 | 400;
+  contentType: string | null;
+  body: Uint8Array | null;
+  storagePath: string | null;
+  publicPath: string;
 };
 
 function sanitizeSegment(value: string): string {
@@ -100,7 +111,7 @@ export function createLocalAssetStore(options: { rootDir: string }): LocalAssetS
 
       const fileName = `${assetId}.${extension}`;
       const storagePath = path.join(assetRoot, fileName);
-      const publicPath = `/assets/local/${fileName}`;
+      const publicPath = `${LOCAL_ASSET_PUBLIC_PREFIX}${fileName}`;
       writeFileSync(storagePath, buffer);
 
       return {
@@ -115,4 +126,70 @@ export function createLocalAssetStore(options: { rootDir: string }): LocalAssetS
       };
     }
   };
+}
+
+function getContentTypeFromExtension(fileName: string): string {
+  const extension = path.extname(fileName).toLowerCase();
+
+  switch (extension) {
+    case ".svg":
+      return "image/svg+xml";
+    case ".png":
+      return "image/png";
+    case ".jpg":
+    case ".jpeg":
+      return "image/jpeg";
+    case ".webp":
+      return "image/webp";
+    default:
+      return "application/octet-stream";
+  }
+}
+
+export function resolveLocalAssetStoragePath(rootDir: string, publicPath: string): string | null {
+  if (!publicPath.startsWith(LOCAL_ASSET_PUBLIC_PREFIX)) {
+    return null;
+  }
+
+  const fileName = publicPath.slice(LOCAL_ASSET_PUBLIC_PREFIX.length);
+
+  if (!fileName || fileName.includes("/") || fileName.includes("\\")) {
+    return null;
+  }
+
+  return path.resolve(rootDir, "artifacts", "assets", fileName);
+}
+
+export async function readLocalAsset(rootDir: string, publicPath: string): Promise<LocalAssetReadResult> {
+  const storagePath = resolveLocalAssetStoragePath(rootDir, publicPath);
+
+  if (!storagePath) {
+    return {
+      status: 400,
+      contentType: null,
+      body: null,
+      storagePath: null,
+      publicPath
+    };
+  }
+
+  try {
+    const body = await readFile(storagePath);
+
+    return {
+      status: 200,
+      contentType: getContentTypeFromExtension(storagePath),
+      body: new Uint8Array(body),
+      storagePath,
+      publicPath
+    };
+  } catch {
+    return {
+      status: 404,
+      contentType: null,
+      body: null,
+      storagePath,
+      publicPath
+    };
+  }
 }

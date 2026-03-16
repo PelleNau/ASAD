@@ -488,3 +488,31 @@ Next recommended step:
 
 - add a minimal asset-serving route in the API layer for local/dev preview
 - then thread asset metadata into frontend fixtures and preview docs more explicitly
+
+### 2026-03-16 - Codex
+
+What changed:
+
+- added a framework-neutral local asset route resolver in the API layer
+- documented `GET /assets/local/:fileName` as the local/dev asset-serving contract
+- added a probe script to verify the route result without requiring a full HTTP server yet
+
+Files touched:
+
+- `packages/assets/src/index.ts`
+- `apps/api/src/index.ts`
+- `package.json`
+- `scripts/probe-local-asset.mjs`
+- `docs/api-contracts.md`
+- `docs/backend-frontend-boundaries.md`
+- `docs/build-sequence.md`
+
+Open questions:
+
+- whether the eventual API app should serve these assets directly or delegate to a static middleware layer
+- whether preview HTML should continue embedding `/assets/local/...` or move to signed/absolute URLs in staging
+
+Next recommended step:
+
+- add a minimal actual HTTP server or route adapter in `apps/api`
+- then hand Loveable the explicit asset-preview contract for frontend integration

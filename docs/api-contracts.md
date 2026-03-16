@@ -207,6 +207,18 @@ Purpose:
 
 - approve or reject generated artifact
 
+### `GET /assets/local/:fileName`
+
+Purpose:
+
+- serve local/dev illustration assets for browser preview and print rendering
+
+Expected behavior:
+
+- resolves to the asset record's `publicPath`
+- returns the stored binary with the correct `content-type`
+- should be treated as a local/dev serving path, not final production CDN design
+
 ## Notes For Loveable
 
 Frontend should treat:
