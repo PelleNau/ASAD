@@ -331,3 +331,26 @@ Next recommended step:
 
 - validate `pnpm pdf:sample` outside the current sandboxed browser restriction
 - then upgrade the worksheet print template to the first production design pass
+
+### 2026-03-16 - Codex
+
+What changed:
+
+- extracted worksheet design signals from the sample story PDFs
+- upgraded the worksheet HTML template to carry level taxonomy, stronger print hierarchy, and answer spaces
+- regenerated the artifact detail snapshot to reflect the new worksheet design
+
+Files touched:
+
+- `packages/renderer/src/worksheet-html.ts`
+- `fixtures/generated/artifact-detail.generated.json`
+
+Open questions:
+
+- whether the final worksheet should include illustration placement on the first page
+- whether answer sheets should mirror the same visual shell or use a simpler teacher-facing variant
+
+Next recommended step:
+
+- validate the upgraded template through the PDF renderer outside sandbox restrictions
+- then add a dedicated answer-sheet print template
