@@ -12,6 +12,8 @@ export const createStoryRequestSchema = z.object({
   language: z.string().min(2),
   storyText: z.string().min(1),
   illustrationFileName: z.string().min(1),
+  illustrationUrl: z.string().min(1).nullable().optional(),
+  illustrationAlt: z.string().min(1).nullable().optional(),
   targetAgeBand: z.string().nullable().optional(),
   tags: z.array(z.string()).default([])
 });

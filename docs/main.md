@@ -408,3 +408,28 @@ Next recommended step:
 
 - render real uploaded illustration assets instead of fixture data URIs
 - then tighten the answer-sheet content model if teacher feedback shows the current sample-answer field is too loose
+
+### 2026-03-16 - Codex
+
+What changed:
+
+- extended the create-story ingestion contract to carry illustration render metadata
+- updated fixtures/docs so frontend can rely on `illustrationUrl` and `illustrationAlt`
+- made the story upload contract explicit about backend responsibility for turning uploads into renderable assets
+
+Files touched:
+
+- `packages/schemas/src/api.ts`
+- `apps/api/src/fixtures.ts`
+- `docs/api-contracts.md`
+- `docs/backend-frontend-boundaries.md`
+
+Open questions:
+
+- whether the upload API should eventually return signed URLs, permanent URLs, or opaque asset handles
+- whether illustration alt text should be operator-authored, model-generated, or both
+
+Next recommended step:
+
+- add an asset-storage abstraction in backend code
+- then replace fixture data URIs with asset-backed illustration URLs in the local generation path

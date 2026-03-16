@@ -92,6 +92,9 @@ Backend returns:
 
 - story ID
 - upload status
+- illustration asset ID
+- renderable illustration URL when available
+- illustration alt text when available
 - validation errors if any
 
 ### 2. Generation request contract
@@ -183,4 +186,3 @@ Any new artifact type requires:
 - whether review previews use raw HTML, iframe, or image snapshots
 - how prompt version management appears in UI
 - auth model for internal operators
-

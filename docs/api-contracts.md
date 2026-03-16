@@ -14,9 +14,26 @@ type StoryRecord = {
   language: string;
   storyText: string;
   illustrationAssetId: string;
+  illustrationUrl?: string | null;
+  illustrationAlt?: string | null;
   targetAgeBand?: string | null;
   themes: string[];
   teachingHooks: string[];
+};
+```
+
+## Create Story Request
+
+```ts
+type CreateStoryRequest = {
+  title: string;
+  language: string;
+  storyText: string;
+  illustrationFileName: string;
+  illustrationUrl?: string | null;
+  illustrationAlt?: string | null;
+  targetAgeBand?: string | null;
+  tags: string[];
 };
 ```
 
@@ -136,6 +153,12 @@ These are recommended initial endpoints.
 Purpose:
 
 - create a story record and upload illustration
+
+Expected ingestion behavior:
+
+- backend stores the uploaded asset
+- backend resolves a renderable `illustrationUrl`
+- backend stores optional `illustrationAlt` for print/accessibility use
 
 ### `GET /stories/:storyId`
 

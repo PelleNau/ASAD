@@ -73,7 +73,11 @@ export async function buildStoryDetailFixture(): Promise<StoryDetailResponse> {
 
 export async function buildCreateStoryFixture(): Promise<CreateStoryResponse> {
   return createStoryResponseSchema.parse({
-    story: apiBootstrap.story,
+    story: {
+      ...apiBootstrap.story,
+      illustrationUrl: apiBootstrap.story.illustrationUrl,
+      illustrationAlt: apiBootstrap.story.illustrationAlt
+    },
     status: "uploaded",
     validationErrors: []
   });
