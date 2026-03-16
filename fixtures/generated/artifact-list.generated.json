@@ -1,0 +1,29 @@
+{
+  "storyId": "example-story",
+  "items": [
+    {
+      "artifactId": "artifact-worksheet-beginner-v1",
+      "artifactType": "worksheet",
+      "title": "Example Story",
+      "status": "generated",
+      "reviewState": "not_required",
+      "templateId": "worksheet-standard-v1",
+      "hasRenderedHtml": true,
+      "hasPdf": false,
+      "previewUrl": null,
+      "pdfUrl": null
+    },
+    {
+      "artifactId": "artifact-teacher-notes-v1",
+      "artifactType": "teacher_notes",
+      "title": "Example Story - lararstod",
+      "status": "approved",
+      "reviewState": "approved",
+      "templateId": "teacher-notes-v1",
+      "hasRenderedHtml": false,
+      "hasPdf": true,
+      "previewUrl": "https://example.com/previews/artifact-teacher-notes-v1",
+      "pdfUrl": "https://example.com/pdfs/artifact-teacher-notes-v1.pdf"
+    }
+  ]
+}

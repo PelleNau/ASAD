@@ -1,0 +1,62 @@
+{
+  "envelope": {
+    "storyId": "example-story",
+    "artifactType": "worksheet",
+    "schemaVersion": "0.1.0",
+    "promptFamily": "ASAD_SAGA_MATERIAL_GENERATOR",
+    "promptVersion": "0.1.0",
+    "model": "static-runner",
+    "generatedAt": "2026-03-16T14:56:47.925Z"
+  },
+  "artifactId": "artifact-worksheet-beginner-v1",
+  "title": "Example Story",
+  "status": "generated",
+  "reviewState": "not_required",
+  "templateId": "worksheet-standard-v1",
+  "result": {
+    "artifactType": "worksheet",
+    "storyId": "example-story",
+    "level": "BEGINNER",
+    "title": "Example Story",
+    "subtitle": "LASFORSTAELSE",
+    "studentInstructions": "Las texten och svara pa fragorna.",
+    "sections": [
+      {
+        "type": "questions",
+        "heading": "Fraga och svar",
+        "description": "Svaren finns direkt i texten eller kan resoneras fram.",
+        "items": [
+          {
+            "id": "q1",
+            "prompt": "Vem handlar berattelsen om?",
+            "skillType": "retrieval",
+            "answerFormat": "short_text",
+            "teacherIntent": "Kontrollerar grundlaggande forstaelse av huvudperson."
+          },
+          {
+            "id": "q2",
+            "prompt": "Hur kanner sig huvudpersonen i borjan av berattelsen?",
+            "skillType": "inference",
+            "answerFormat": "short_text",
+            "teacherIntent": "Tranar elevens formaga att tolka kanslor i text."
+          },
+          {
+            "id": "q3",
+            "prompt": "Vad tycker du ar viktigt i berattelsen, och varfor?",
+            "skillType": "reflection",
+            "answerFormat": "long_text",
+            "teacherIntent": "Oppnar for egen tolkning och resonemang."
+          }
+        ]
+      }
+    ],
+    "printNotes": {
+      "showNameField": true,
+      "showDateField": true
+    }
+  },
+  "renderedHtml": "\n    <!doctype html>\n    <html lang=\"sv\">\n      <head>\n        <meta charset=\"utf-8\" />\n        <title>Example Story</title>\n        <style>\n          :root {\n            --bg: #e9e4e3;\n            --card: #ffffff;\n            --ink: #111111;\n            --muted: #595959;\n            --accent: #e2591a;\n          }\n          * { box-sizing: border-box; }\n          body {\n            margin: 0;\n            background: var(--bg);\n            color: var(--ink);\n            font-family: Georgia, \"Times New Roman\", serif;\n          }\n          .page {\n            width: 210mm;\n            min-height: 297mm;\n            margin: 0 auto;\n            padding: 16mm;\n            background: var(--card);\n          }\n          .eyebrow {\n            color: var(--accent);\n            font: 700 12px/1.2 Arial, sans-serif;\n            letter-spacing: 0.08em;\n            text-transform: uppercase;\n          }\n          h1 {\n            margin: 8px 0 4px;\n            font-size: 28px;\n            font-weight: 400;\n          }\n          .subtitle {\n            margin: 0 0 16px;\n            color: var(--muted);\n            font: 400 14px/1.4 Arial, sans-serif;\n          }\n          .meta {\n            display: flex;\n            gap: 24px;\n            margin: 0 0 20px;\n            font: 400 13px/1.4 Arial, sans-serif;\n          }\n          .instructions {\n            margin: 0 0 24px;\n            font: 400 14px/1.5 Arial, sans-serif;\n          }\n          .section {\n            margin: 0 0 24px;\n          }\n          h2 {\n            margin: 0 0 6px;\n            font-size: 18px;\n          }\n          .section-description {\n            margin: 0 0 12px;\n            color: var(--muted);\n            font: 400 13px/1.4 Arial, sans-serif;\n          }\n          .question-list {\n            margin: 0;\n            padding: 0;\n            list-style: none;\n          }\n          .question-item {\n            display: grid;\n            grid-template-columns: 24px 1fr;\n            gap: 8px;\n            margin: 0 0 12px;\n            font: 400 15px/1.5 Arial, sans-serif;\n          }\n          .question-index {\n            font-weight: 700;\n          }\n        </style>\n      </head>\n      <body>\n        <main class=\"page\">\n          <div class=\"eyebrow\">ASAD Worksheet</div>\n          <h1>Example Story</h1>\n          <p class=\"subtitle\">LASFORSTAELSE</p>\n          <div class=\"meta\">\n            <div class=\"meta-field\">Namn: ________________________</div>\n            <div class=\"meta-field\">Datum: ________________________</div>\n          </div>\n          <p class=\"instructions\">Las texten och svara pa fragorna.</p>\n          \n        <section class=\"section\">\n          <h2>Fraga och svar</h2>\n          <p class=\"section-description\">Svaren finns direkt i texten eller kan resoneras fram.</p>\n          <ol class=\"question-list\">\n            <li class=\"question-item\">\n              <span class=\"question-index\">1.</span>\n              <span class=\"question-text\">Vem handlar berattelsen om?</span>\n            </li>\n          \n            <li class=\"question-item\">\n              <span class=\"question-index\">2.</span>\n              <span class=\"question-text\">Hur kanner sig huvudpersonen i borjan av berattelsen?</span>\n            </li>\n          \n            <li class=\"question-item\">\n              <span class=\"question-index\">3.</span>\n              <span class=\"question-text\">Vad tycker du ar viktigt i berattelsen, och varfor?</span>\n            </li>\n          </ol>\n        </section>\n      \n        </main>\n      </body>\n    </html>\n  ",
+  "previewUrl": null,
+  "pdfUrl": null,
+  "issues": []
+}

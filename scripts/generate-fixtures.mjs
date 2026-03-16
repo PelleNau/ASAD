@@ -7,7 +7,7 @@ import {
   buildGenerationAcceptedFixture,
   buildStoryDetailFixture,
   buildStoryListFixture
-} from "../apps/api/dist/fixtures.js";
+} from "../apps/api/dist/apps/api/src/fixtures.js";
 
 const rootDir = path.resolve(new URL("..", import.meta.url).pathname);
 const outputDir = path.join(rootDir, "fixtures", "generated");

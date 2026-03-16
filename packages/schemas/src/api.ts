@@ -1,11 +1,11 @@
 import { z } from "zod";
-import { materialGenerationRequestSchema } from "./material-request";
+import { materialGenerationRequestSchema } from "./material-request.js";
 import {
   artifactPreviewSchema,
   generatedArtifactResponseSchema,
   storyListItemSchema
-} from "./status";
-import { storyRecordSchema } from "./story";
+} from "./status.js";
+import { storyRecordSchema } from "./story.js";
 
 export const createStoryRequestSchema = z.object({
   title: z.string().min(1),

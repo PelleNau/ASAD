@@ -1,0 +1,26 @@
+{
+  "story": {
+    "storyId": "example-story",
+    "sourceVersion": "draft",
+    "title": "Example Story",
+    "language": "sv",
+    "storyText": "Detta ar en platshallare for den forsta historien.",
+    "illustrationAssetId": "example-illustration",
+    "themes": [],
+    "teachingHooks": []
+  },
+  "artifacts": [
+    {
+      "artifactId": "artifact-worksheet-beginner-v1",
+      "artifactType": "worksheet",
+      "title": "Example Story",
+      "status": "generated",
+      "reviewState": "not_required",
+      "templateId": "worksheet-standard-v1",
+      "hasRenderedHtml": true,
+      "hasPdf": false,
+      "previewUrl": null,
+      "pdfUrl": null
+    }
+  ]
+}

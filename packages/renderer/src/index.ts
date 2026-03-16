@@ -1,2 +1,2 @@
-export * from "./templates";
-export * from "./worksheet-html";
+export * from "./templates.js";
+export * from "./worksheet-html.js";

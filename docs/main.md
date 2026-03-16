@@ -248,3 +248,32 @@ Open questions:
 Next recommended step:
 
 - tell Loveable to start in `blank-canvas` using the fixture and contract docs from `ASAD`
+
+### 2026-03-16 - Codex
+
+What changed:
+
+- installed workspace dependencies and generated a lockfile
+- fixed TypeScript path resolution and ESM runtime issues for local execution
+- generated backend-derived API fixture snapshots successfully
+
+Files touched:
+
+- `tsconfig.base.json`
+- `apps/*/tsconfig.json`
+- `packages/*/src/index.ts`
+- `packages/schemas/src/*.ts`
+- `apps/*/package.json`
+- `scripts/generate-fixtures.mjs`
+- `fixtures/generated/*`
+- `docs/build-sequence.md`
+
+Open questions:
+
+- whether to keep the current `dist/.../src/*` entrypoint shape until project references are introduced
+- whether generated fixture snapshots should become part of every contract-changing PR
+
+Next recommended step:
+
+- commit the validated build/runtime fixes
+- then replace the static prompt runner with a real OpenAI runner and add PDF rendering

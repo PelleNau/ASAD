@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { generationArtifactEnvelopeSchema, materialArtifactTypeSchema } from "./material-request";
+import { generationArtifactEnvelopeSchema, materialArtifactTypeSchema } from "./material-request.js";
 
 export const generationStatusSchema = z.enum([
   "draft",

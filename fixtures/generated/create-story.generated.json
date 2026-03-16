@@ -1,0 +1,14 @@
+{
+  "story": {
+    "storyId": "example-story",
+    "sourceVersion": "draft",
+    "title": "Example Story",
+    "language": "sv",
+    "storyText": "Detta ar en platshallare for den forsta historien.",
+    "illustrationAssetId": "example-illustration",
+    "themes": [],
+    "teachingHooks": []
+  },
+  "status": "uploaded",
+  "validationErrors": []
+}

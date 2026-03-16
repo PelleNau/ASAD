@@ -1,0 +1,90 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .: {}
+
+  apps/api:
+    dependencies:
+      '@asad/prompts':
+        specifier: workspace:*
+        version: link:../../packages/prompts
+      '@asad/renderer':
+        specifier: workspace:*
+        version: link:../../packages/renderer
+      '@asad/schemas':
+        specifier: workspace:*
+        version: link:../../packages/schemas
+      '@asad/worker':
+        specifier: workspace:*
+        version: link:../worker
+    devDependencies:
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.3
+
+  apps/worker:
+    dependencies:
+      '@asad/prompts':
+        specifier: workspace:*
+        version: link:../../packages/prompts
+      '@asad/renderer':
+        specifier: workspace:*
+        version: link:../../packages/renderer
+      '@asad/schemas':
+        specifier: workspace:*
+        version: link:../../packages/schemas
+    devDependencies:
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.3
+
+  packages/prompts:
+    dependencies:
+      '@asad/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+    devDependencies:
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.3
+
+  packages/renderer:
+    dependencies:
+      '@asad/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+    devDependencies:
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.3
+
+  packages/schemas:
+    dependencies:
+      zod:
+        specifier: ^3.24.2
+        version: 3.25.76
+    devDependencies:
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.3
+
+packages:
+
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
+  zod@3.25.76:
+    resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
+
+snapshots:
+
+  typescript@5.9.3: {}
+
+  zod@3.25.76: {}

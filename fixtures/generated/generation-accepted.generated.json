@@ -1,0 +1,9 @@
+{
+  "jobId": "job-story-example-001",
+  "storyId": "example-story",
+  "artifactTypes": [
+    "worksheet",
+    "teacher_notes"
+  ],
+  "status": "generation_queued"
+}

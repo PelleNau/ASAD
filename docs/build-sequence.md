@@ -17,13 +17,13 @@ Get the workspace into a state where:
 From the repo root:
 
 ```bash
-pnpm install
+COREPACK_HOME="$PWD/.corepack-cache" corepack pnpm install
 ```
 
 ## 2. Run type checks
 
 ```bash
-pnpm check
+COREPACK_HOME="$PWD/.corepack-cache" corepack pnpm check
 ```
 
 This should catch:
@@ -35,7 +35,7 @@ This should catch:
 ## 3. Build the workspace
 
 ```bash
-pnpm build
+COREPACK_HOME="$PWD/.corepack-cache" corepack pnpm build
 ```
 
 Expected output:
@@ -47,7 +47,7 @@ Expected output:
 ## 4. Generate backend-derived fixtures
 
 ```bash
-pnpm fixtures:generate
+COREPACK_HOME="$PWD/.corepack-cache" corepack pnpm fixtures:generate
 ```
 
 Generated outputs should appear in:
@@ -60,15 +60,16 @@ fixtures/generated/
 
 - `apps/api` depends on `@asad/worker` for fixture generation helpers.
 - package `exports` are now declared for all workspace packages and app packages that are imported by other code.
+- workspace package entrypoints currently target emitted `dist/.../src/*` paths because TypeScript is compiling source across package boundaries.
 - this repo still uses a static prompt runner. Real OpenAI integration is a later step.
 
 ## Expected Next Build Risks
 
-Most likely first issues after install/build:
+Most likely next issues after install/build:
 
-- TypeScript module resolution edge cases
-- ESM runtime path issues in the fixture script
+- package build layout cleanup once project references are introduced
 - missing dependencies once real rendering or OpenAI clients are added
+- PDF/runtime integration edge cases when Playwright is added
 
 ## Rule
 

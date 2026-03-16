@@ -13,7 +13,7 @@ import {
   type StoryListResponse
 } from "@asad/schemas";
 import { generateArtifactFromStory } from "@asad/worker";
-import { apiBootstrap } from "./index";
+import { apiBootstrap } from "./index.js";
 
 export async function buildStoryListFixture(): Promise<StoryListResponse> {
   return storyListResponseSchema.parse({
