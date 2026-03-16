@@ -277,3 +277,30 @@ Next recommended step:
 
 - commit the validated build/runtime fixes
 - then replace the static prompt runner with a real OpenAI runner and add PDF rendering
+
+### 2026-03-16 - Codex
+
+What changed:
+
+- added an OpenAI-backed prompt runner behind the existing runner interface
+- kept static generation as the default fallback when `OPENAI_API_KEY` is missing
+- verified that check, build, and generated fixture snapshots still succeed locally
+
+Files touched:
+
+- `packages/prompts/src/runner.ts`
+- `packages/prompts/package.json`
+- `apps/worker/src/index.ts`
+- `apps/api/src/index.ts`
+- `README.md`
+- `docs/generated-fixture-procedure.md`
+
+Open questions:
+
+- whether to move from prompt-constrained JSON parsing to stricter Responses API structured outputs next
+- whether answer sheets should get a dedicated schema instead of reusing worksheet generation temporarily
+
+Next recommended step:
+
+- add PDF rendering with Playwright
+- then replace the static worksheet template with the first production worksheet design

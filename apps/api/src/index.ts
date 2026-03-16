@@ -4,7 +4,7 @@ import {
   generationArtifactEnvelopeSchema,
   type StoryRecord
 } from "@asad/schemas";
-import { getPromptFamilyCatalog, getPromptFamilyForArtifact, StaticPromptRunner } from "@asad/prompts";
+import { getPromptFamilyCatalog, getPromptFamilyForArtifact, createPromptRunner } from "@asad/prompts";
 import { getTemplateCatalog, renderWorksheetHtml } from "@asad/renderer";
 
 const story = createStoryRecord({
@@ -31,13 +31,17 @@ export const apiBootstrap = {
 export async function generateWorksheetPreview(storyRecord: StoryRecord) {
   const artifactType = "worksheet";
   const promptFamily = getPromptFamilyForArtifact(artifactType);
-  const runner = new StaticPromptRunner();
+  const model = process.env.OPENAI_MODEL ?? "gpt-4o-mini";
+  const runner = createPromptRunner({
+    apiKey: process.env.OPENAI_API_KEY,
+    model
+  });
   const result = await runner.run({
     story: storyRecord,
     artifactType,
     promptFamily: promptFamily.key,
     promptVersion: "0.1.0",
-    model: "static-runner"
+    model
   });
 
   return {
@@ -47,7 +51,7 @@ export async function generateWorksheetPreview(storyRecord: StoryRecord) {
       schemaVersion: "0.1.0",
       promptFamily: promptFamily.key,
       promptVersion: "0.1.0",
-      model: "static-runner",
+      model: process.env.OPENAI_API_KEY ? model : "static-runner",
       generatedAt: new Date().toISOString()
     }),
     result,

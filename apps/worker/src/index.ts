@@ -5,7 +5,7 @@ import {
   type MaterialArtifactType,
   type StoryRecord
 } from "@asad/schemas";
-import { getPromptFamilyForArtifact, StaticPromptRunner, type PromptExecutionResult } from "@asad/prompts";
+import { createPromptRunner, getPromptFamilyForArtifact, type PromptExecutionResult } from "@asad/prompts";
 import { renderWorksheetHtml } from "@asad/renderer";
 
 export type GenerationJobPlan = {
@@ -33,18 +33,28 @@ export type GeneratedArtifact = {
   renderedHtml: string | null;
 };
 
+export type GenerationRuntimeOptions = {
+  apiKey?: string;
+  model?: string;
+};
+
 export async function generateArtifactFromStory(
   story: StoryRecord,
-  artifactType: MaterialArtifactType
+  artifactType: MaterialArtifactType,
+  options: GenerationRuntimeOptions = {}
 ): Promise<GeneratedArtifact> {
   const promptFamily = getPromptFamilyForArtifact(artifactType);
-  const runner = new StaticPromptRunner();
+  const runner = createPromptRunner({
+    apiKey: options.apiKey ?? process.env.OPENAI_API_KEY,
+    model: options.model ?? process.env.OPENAI_MODEL ?? "gpt-4o-mini"
+  });
+  const model = options.model ?? process.env.OPENAI_MODEL ?? "gpt-4o-mini";
   const result = await runner.run({
     story,
     artifactType,
     promptFamily: promptFamily.key,
     promptVersion: "0.1.0",
-    model: "static-runner"
+    model
   });
 
   const envelope = generationArtifactEnvelopeSchema.parse({
@@ -53,7 +63,7 @@ export async function generateArtifactFromStory(
     schemaVersion: "0.1.0",
     promptFamily: promptFamily.key,
     promptVersion: "0.1.0",
-    model: "static-runner",
+    model: options.apiKey ?? process.env.OPENAI_API_KEY ? model : "static-runner",
     generatedAt: new Date().toISOString()
   });
 

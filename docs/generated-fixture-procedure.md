@@ -17,7 +17,7 @@ That prevents drift between:
 The root script is:
 
 ```bash
-pnpm fixtures:generate
+COREPACK_HOME="$PWD/.corepack-cache" corepack pnpm fixtures:generate
 ```
 
 ## Output
@@ -46,6 +46,8 @@ That means the intended sequence is:
 1. install dependencies
 2. build packages/apps
 3. run `pnpm fixtures:generate`
+
+If `OPENAI_API_KEY` is not configured, the script uses the static runner fallback. That keeps the generated snapshots stable for frontend mockups and contract review.
 
 ## Why this matters
 

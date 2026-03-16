@@ -51,6 +51,20 @@ These should be implemented as versioned generators with strict input and output
 - PDF rendering: HTML/CSS templates rendered with Playwright PDF
 - Review UI: internal web app backed by artifact JSON and PDF previews
 
+## Current Runtime
+
+The current backend supports two generation modes:
+
+- default local/dev fallback via `StaticPromptRunner`
+- OpenAI-backed generation via `OpenAIPromptRunner` when `OPENAI_API_KEY` is present
+
+Optional environment variables:
+
+- `OPENAI_API_KEY`
+- `OPENAI_MODEL` default: `gpt-4o-mini`
+
+Without `OPENAI_API_KEY`, fixture generation and previews continue to work from deterministic static outputs.
+
 ## Core Principle
 
 Do not let the model generate final layout.

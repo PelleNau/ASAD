@@ -16,7 +16,8 @@
     "check": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@asad/schemas": "workspace:*"
+    "@asad/schemas": "workspace:*",
+    "openai": "^4.104.0"
   },
   "devDependencies": {
     "typescript": "^5.8.2"
